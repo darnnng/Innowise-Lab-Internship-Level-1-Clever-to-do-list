@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { Route, Routes } from 'react-router-dom';
+import SignUp from './components/SignUp/SignUp.jsx'
+import SignIn from './components/SignIn/SignIn.jsx'
+import Account from './components/Main/Account.jsx'
+import { AuthContextProvider } from './context/AuthContext.js';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import CreateToDo from './components/Main/Creatingpage/Createpage.jsx';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <AuthContextProvider>
+      <Routes>
+        <Route path="/" element={<SignIn/>} />
+        <Route path="/signup" element={<SignUp/>} />
+        <Route path="/account" element={<ProtectedRoute><Account/></ProtectedRoute>} />
+        <Route path="/create" element={<CreateToDo/>} />
+      </Routes>
+      </AuthContextProvider>
     </div>
   );
 }
-let app;
+
 export default App;

@@ -1,0 +1,42 @@
+.todorectangle {
+    display:flex;
+    justify-content: space-between;
+    padding: 16px;
+    margin-bottom: 8px;
+    background-color:white;
+    width:100%;
+    border: 1px solid #ccc;
+	border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.row {
+    display: flex;
+    text-align:center;
+    height: 30px;
+}
+
+.trashbtn {
+    border:none;
+    background-color:transparent;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.editbtn {
+    border:none;
+    background-color:transparent;
+    cursor: pointer;
+    margin-right: 8px;
+}
+
+.todotext {
+    margin-left: 8px;
+    margin-top: 5px;
+}
+
+.checkbox {
+    width:20px;
+    cursor: pointer;
+
+}

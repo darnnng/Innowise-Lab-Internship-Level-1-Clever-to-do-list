@@ -1,0 +1,116 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,800;1,900&display=swap');
+
+.wrapper {
+   
+    display: block;
+    margin:auto;
+    font-family: 'Raleway', sans-serif;
+}
+
+
+.left {
+    position:fixed;left:0;top:0;width:55%;height:100%;background:linear-gradient(to right, #9fdeaf, #96dbe2);color:#fff;overflow:auto;
+    display:flex; justify-content: center;flex-direction: column; align-items:center;
+}
+
+.imagelabel {
+    margin-top: 40px;
+    margin-left: 70px;
+    font-size:46px;
+    line-height:56px;
+    font-weight: bold;
+    width:700px;
+}
+
+
+
+.signinlabel {
+    font-size:50px;
+    text-align: center;
+    margin-left: 0px;
+    margin-top: 0px;
+}
+
+.imagesignup {
+    width:670px;
+    height:460px;
+}
+
+.right {
+    position:fixed;right:0px;top:0;width:40%;height:100%;overflow:auto;display:flex;justify-content: center;flex-direction:column;align-items:center;
+}
+
+.sign {
+    width:600px;
+    height:500px;
+    padding:16px;
+    }
+
+.textsign {
+    color:#96dbe2;
+    font-size:46px;
+    line-height:32px;
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.plink {
+    padding-right:290px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.plinksignup {
+    padding-right:280px;
+}
+
+.link {
+    text-decoration-line: underline;
+    color:black
+}
+
+.divinput {
+    display:flex;
+    flex-direction: column;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+}
+
+.inputlabel {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-weight: 500;
+}
+
+.input {
+    padding:12px;
+    border:none;
+  font-size: 14px;
+  padding: 15px;
+  width: 500px;
+  font-weight: 300;
+  background-color: #e4e4e494;
+  letter-spacing: 1.5px;
+  padding-left: 20px;
+}
+
+.button {
+    font-family: 'Raleway', sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    background: #96dbe2;
+    width: 100%;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    margin-top: 35px;
+  }
+  .button:hover,.form button:active,.form button:focus {
+    background: #a3cace;
+  }

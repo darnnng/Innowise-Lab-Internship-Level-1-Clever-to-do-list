@@ -1,0 +1,120 @@
+
+.container {
+    background:linear-gradient(to right, #9fdeaf, #96dbe2);
+    display:flex;
+    justify-content: center;
+    font-family: 'Raleway', sans-serif;
+    width: 100%;
+    min-height: 100%;
+    margin: 0;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    z-index: 1; 
+    flex-direction: column;
+}
+
+.todoapp {
+  width:100%;
+  max-width:500px;
+  min-height:400px;
+  margin:auto;
+  background-color:#e2fae8;
+  padding:20px;
+  border-radius: 10px;
+
+}
+
+.date-section {
+  color:#27AE60;
+}
+
+.addtaskbtn {
+  background: #27AE60;
+	font-family: 'Raleway', sans-serif;
+  border-radius:5px;
+	color: white;
+	border: 0 none;
+	cursor: pointer;
+	width:100%;
+  height:48px;
+}
+
+.linktocreate {
+  color:white;
+  text-decoration: none;
+}
+
+.todo {
+  background-color:aqua;
+}
+
+.todoform {
+  margin-top: 40px;
+  display:flex;
+  justify-content: space-between;
+
+}
+
+.btn {
+	background: #27AE60;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	margin-left:10px;
+  height:48px;
+}
+
+.tasksleft {
+  display: flex;
+    justify-content: center;
+}
+
+.todoinput {
+  padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;
+}
+
+ul {
+  padding: 0;
+}
+
+.welcometext {
+    font-size:38px;
+    color:#9fdeaf;
+    text-align: center;
+    margin:0;
+}
+
+.buttonaccount {
+    font-family: 'Raleway', sans-serif;
+    width:100px;
+    height:50px;
+    text-transform: uppercase;
+    outline: 0;
+    background-color:#9fdeaf;
+    border: 0;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    margin-top: 35px;
+    position: absolute;
+    right:40px;
+    top:0px;
+  }
+  .button:hover,.form button:active,.form button:focus {
+    background: #a3cace;
+  }
