@@ -11,14 +11,18 @@ import { useLocation } from 'react-router-dom'
 const UpdateToDo=()=>{
 
     const location = useLocation()
+    console.log(location.state.todo)
+    
+
 
     const [input,setInput]=useState('')
     const [description,setDescription]=useState('')
     const {user}=UserAuth()
 
-    const updateToDoBtn= async()=>{
+    const updateToDoBtn= async(e)=>{
+        e.preventDefault(e);
         debugger;
-        await updateDoc(doc(db,'users',`${user.uid}`,'todos',location.state),{
+        await updateDoc(doc(db,'users',user.uid,'todos',location.state.todo),{
             description:description,
             title:input
         }) 

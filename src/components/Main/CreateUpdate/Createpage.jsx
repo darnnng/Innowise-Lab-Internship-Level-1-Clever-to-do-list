@@ -33,7 +33,7 @@ const CreateToDo=()=>{
     return (
         <div className='container'>
             <Link className='linktocreate' to='/account'><button  className='buttonaccount'>BACK</button></Link>
-            <div  className='todoapp createtodo'>
+            <div  className='createtodo'>
             <h1 className='welcometext'>Creating task </h1>
             
             <form className='createform'>

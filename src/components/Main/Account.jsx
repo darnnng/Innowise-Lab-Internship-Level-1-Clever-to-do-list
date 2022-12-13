@@ -23,10 +23,6 @@ const Account=()=>{
     const [month, setMonth]=useState(null);
     const [year, setYear]=useState(null);
     const [input,setInput]=useState('')
-    const [description,setDescription]=useState('')
-
-    const [modalActive,setModalActive]=useState(false)
-    const [modalUpdate,setModalUpdate]=useState(false)
 
     const [showDetails, setShowDetails] = useState(false);
     const [data, setData] = useState(null);
@@ -56,24 +52,6 @@ const Account=()=>{
             console.log(e.message)
         }
     }
-
-    //create
-
-    const createTodo=async(e)=>{
-        e.preventDefault(e)
-        if (input ==="") {
-            alert('empty string')
-            //вывести toast с сообщением Empty input
-            return;
-        }
-        await addDoc(collection(db,'users',user.uid,'todos'),{
-            title:input,
-            isDone:false,
-            description:'read',
-            time:new Date().toLocaleString()
-        })
-        setInput('')
-    }
     
     
     //read
@@ -101,16 +79,6 @@ const Account=()=>{
             isDone:!todo.isDone
         }) 
     }
-
-    const updateToDo= async(id)=>{
-        debugger;
-        setModalUpdate(true)
-        await updateDoc(doc(db,'users',`${user.uid}`,'todos',id),{
-            description:description,
-            title:input
-        }) 
-        
-    }
     
 
     //delete
@@ -132,7 +100,7 @@ const Account=()=>{
                 <h1 className='welcometext'>Your plans for <br/> {showDetails} {data} </h1>
                 <ul>
                     {todos.map((todo,index)=>(
-                        <ToDo  active={modalUpdate}  todo={todo} key={index} toggleComplete={toggleComplete} deleteTodo={deleteTodo}/>
+                        <ToDo  todo={todo} key={index} toggleComplete={toggleComplete} deleteTodo={deleteTodo}/>
                     ))}
                 </ul>
                 <Link className='linktocreate' to='/create'><button  className="addtaskbtn"> <AiOutlinePlus /> Add a new task </button></Link>

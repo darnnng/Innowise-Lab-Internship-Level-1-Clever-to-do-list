@@ -48,5 +48,12 @@
 }
 
 .createtodo {
+  width:100%;
+  max-width:500px;
+  min-height:400px;
+  margin:auto;
+  background-color:#e2fae8;
+  padding:20px;
+  border-radius: 10px;
   margin:auto;
 }
