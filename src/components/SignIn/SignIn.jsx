@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {UserAuth} from '../../context/AuthContext'
-import '../SignIn/signin.scss'
+import '../SignIn/signin.css'
 import person from "../../assets/illustration1.png"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

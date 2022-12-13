@@ -1,9 +1,12 @@
 import React from 'react'
-import './ToDo.scss'
+import './ToDo.css'
 import {FaRegTrashAlt} from 'react-icons/fa'
 import {FaPencilAlt} from 'react-icons/fa'
+import UpdateToDo from '../CreateUpdate/Updatingtodo'
+import { Link } from 'react-router-dom'
 
-const ToDo=({todo,toggleComplete,deleteTodo})=>{
+const ToDo=({todo,toggleComplete,deleteTodo,active,setActive,updateToDo})=>{
+
     return (
         <li class='todorectangle'>
             <div className='row'>
@@ -11,7 +14,7 @@ const ToDo=({todo,toggleComplete,deleteTodo})=>{
                 <span className="todotext" onClick={()=>toggleComplete(todo)}>{todo.title}</span>
             </div>
             <div>
-            <button className='editbtn'>{<FaPencilAlt/>}</button>
+            <Link  to='/update' state={{todo:todo.id}}><button className='editbtn'>{<FaPencilAlt/>}</button></Link>
             <button onClick={()=>deleteTodo(todo.id)} className='trashbtn'>{<FaRegTrashAlt/>}</button>
             </div>
         </li>

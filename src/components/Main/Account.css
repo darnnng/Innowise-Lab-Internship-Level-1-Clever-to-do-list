@@ -23,6 +23,7 @@
   background-color:#e2fae8;
   padding:20px;
   border-radius: 10px;
+  margin-bottom: 30px;
 
 }
 
@@ -110,7 +111,7 @@ ul {
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
-    margin-top: 35px;
+    margin-top: 15px;
     position: absolute;
     right:40px;
     top:0px;

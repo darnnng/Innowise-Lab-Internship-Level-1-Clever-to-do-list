@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {UserAuth} from '../../context/AuthContext'
-import '../Main/Account.scss'
+import '../Main/Account.css'
 import ToDo from './ToDoContainer/ToDo'
 import {auth,db} from '../../firebase.js'
-import {set,ref,onValue} from 'firebase/database'
 import {uid} from "uid"
 import { onAuthStateChanged } from 'firebase/auth'
 import {AiOutlinePlus} from "react-icons/ai"
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc } from 'firebase/firestore'
+import Calendar from './Calendar/Calendar'
 
 
 const Account=()=>{
@@ -18,28 +18,18 @@ const Account=()=>{
     const [todos,setTodos]=useState([])
     const {user,logout}=UserAuth()
     const navigate=useNavigate()
-    //const todosRef=db.collection(`users/${auth.currentUser.uid}/todos`)
-
-    // useEffect(() => {
-    //     auth.onAuthStateChanged((user) => {
-    //         if(user) {
-    //         onValue(ref(db, `/${auth.currentUser.uid}`), (snapshot) => {
-    //           setTodos([]);
-    //           const data = snapshot.val();
-    //           if (data !== null) {
-    //             Object.values(data).map((todo) => {
-    //               setTodos((oldArray) => [...oldArray, todo]);
-    //             });
-    //           }
-    //         });
-    //     }
-    //     });
-    //   }, []);
 
     const [date, setDate]=useState(null);
     const [month, setMonth]=useState(null);
     const [year, setYear]=useState(null);
     const [input,setInput]=useState('')
+    const [description,setDescription]=useState('')
+
+    const [modalActive,setModalActive]=useState(false)
+    const [modalUpdate,setModalUpdate]=useState(false)
+
+    const [showDetails, setShowDetails] = useState(false);
+    const [data, setData] = useState(null);
 
 
     useEffect(()=>{
@@ -53,7 +43,11 @@ const Account=()=>{
         setYear(myYear);
     },[])
 
-      
+    const showDetailsHandle = (dayStr) => {
+        setData(dayStr);
+        setShowDetails(true);
+      };
+
     const handleLogout=async()=>{
         try {
             await logout()
@@ -108,32 +102,41 @@ const Account=()=>{
         }) 
     }
 
+    const updateToDo= async(id)=>{
+        debugger;
+        setModalUpdate(true)
+        await updateDoc(doc(db,'users',`${user.uid}`,'todos',id),{
+            description:description,
+            title:input
+        }) 
+        
+    }
+    
+
     //delete
 
     const deleteTodo=async(id)=>{
+        debugger
         await deleteDoc(doc(db,'users',user.uid,'todos',id))
     }
 
 
     return (
+        
         <div className='container'>
-    
-            <div className='todoapp'>
-            <h1 className='welcometext'>Your plans for <span className='date-section'>{date}/{month}/{year}</span></h1>
             <button onClick={handleLogout} className='buttonaccount'>Logout</button>
-            
-
-            <form onSubmit={createTodo} className='todoform'>
-                <input value={input} onChange={(e)=>setInput(e.target.value)} className='todoinput' type="text" placeholder="Add todo.." />
-                <button  type="submit" className='btn'><AiOutlinePlus/></button>
-            </form>
-            <ul>
-                {todos.map((todo,index)=>(
-                    <ToDo todo={todo} key={index} toggleComplete={toggleComplete} deleteTodo={deleteTodo}/>
-                ))}
-            </ul>
-            <button className="addtaskbtn"><Link className='linktocreate' to='/create'> <AiOutlinePlus /> Add a new task</Link></button>
-            {todos.length<1? <p className='tasksleft'>No tasks for today</p>: <p className='tasksleft'>{`You have ${todos.length} tasks left today`}</p>}
+           
+            <Calendar showDetailsHandle={showDetailsHandle} />
+           
+            <div className='todoapp'>
+                <h1 className='welcometext'>Your plans for <br/> {showDetails} {data} </h1>
+                <ul>
+                    {todos.map((todo,index)=>(
+                        <ToDo  active={modalUpdate}  todo={todo} key={index} toggleComplete={toggleComplete} deleteTodo={deleteTodo}/>
+                    ))}
+                </ul>
+                <Link className='linktocreate' to='/create'><button  className="addtaskbtn"> <AiOutlinePlus /> Add a new task </button></Link>
+                {todos.length<1? <p className='tasksleft'>No tasks for today</p>: <p className='tasksleft'>{`You have ${todos.length} tasks left`}</p>}
             
             </div>
             

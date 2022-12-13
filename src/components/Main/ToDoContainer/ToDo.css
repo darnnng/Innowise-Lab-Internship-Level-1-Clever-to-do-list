@@ -33,6 +33,7 @@
 .todotext {
     margin-left: 8px;
     margin-top: 5px;
+    cursor: pointer;
 }
 
 .checkbox {
