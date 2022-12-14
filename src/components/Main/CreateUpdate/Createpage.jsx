@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns'
 import { addDoc, collection } from 'firebase/firestore'
 import React from 'react'
 import { useState } from 'react'
@@ -8,10 +9,13 @@ import './Createpage.css'
 
 const CreateToDo=()=>{
 
+    
+
     const [input,setInput]=useState('')
     const [description,setDescription]=useState('')
+    const [data, setData] = useState('');
     const {user}=UserAuth()
-    
+   
     const createTodo=async(e)=>{
         e.preventDefault(e)
         if (input ==="") {
@@ -23,10 +27,11 @@ const CreateToDo=()=>{
             title:input,
             isDone:false,
             description:description,
-            time:new Date().toLocaleString()
+            time: format(parseISO(data), 'dd.MM.yyyy')
         })
         setInput('')
         setDescription('')
+        setData('')
        
     }
 
@@ -39,7 +44,7 @@ const CreateToDo=()=>{
             <form className='createform'>
                 <input value={input} onChange={(e)=>setInput(e.target.value)}  className='todoinput' type="text" placeholder="Add todo.." />
                 <textarea value={description} onChange={(e)=>setDescription(e.target.value)} class='tododescription' type='text' placeholder="Add todo description.."/>
-                <p>Current date {new Date().toLocaleString()}</p>
+                <p>Date: <input value={data} onChange={(e)=>setData(e.target.value)}  className='datapicker' type="date"></input></p>
             </form>
             
             <button onClick={createTodo} className="addtaskbtn">Save</button>

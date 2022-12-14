@@ -4,40 +4,23 @@ import { Link, useNavigate } from 'react-router-dom'
 import {UserAuth} from '../../context/AuthContext'
 import '../Main/Account.css'
 import ToDo from './ToDoContainer/ToDo'
-import {auth,db} from '../../firebase.js'
-import {uid} from "uid"
-import { onAuthStateChanged } from 'firebase/auth'
+import {db} from '../../firebase.js'
 import {AiOutlinePlus} from "react-icons/ai"
-import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import Calendar from './Calendar/Calendar'
+import { format, parseISO } from 'date-fns'
 
 
 const Account=()=>{
 
-    const [todo, setTodo]=useState("")
     const [todos,setTodos]=useState([])
     const {user,logout}=UserAuth()
     const navigate=useNavigate()
 
-    const [date, setDate]=useState(null);
-    const [month, setMonth]=useState(null);
-    const [year, setYear]=useState(null);
-    const [input,setInput]=useState('')
-
     const [showDetails, setShowDetails] = useState(false);
     const [data, setData] = useState(null);
+    const [undone,setUndone]=useState([])
 
-
-    useEffect(()=>{
-        const myDate = new Date();
-        const myMonth = myDate.getMonth()+1;
-        const myDay = myDate.getDate();
-        const myYear = myDate.getFullYear();
-
-        setMonth(myMonth);
-        setDate(myDay);
-        setYear(myYear);
-    },[])
 
     const showDetailsHandle = (dayStr) => {
         setData(dayStr);
@@ -53,11 +36,10 @@ const Account=()=>{
         }
     }
     
-    
     //read
 
     useEffect(()=>{
-        const q=query(collection(db,'users',`${user.uid}`,'todos'))
+        const q=query(collection(db,'users',`${user.uid}`,'todos'), where ('time','==',data))
         console.log('qwery',q)
         const unsubscribe=onSnapshot(q,(querySnapshot)=>{
             let todosArr=[];
@@ -65,22 +47,22 @@ const Account=()=>{
                 todosArr.push({...doc.data(),id:doc.id})
             })
         setTodos(todosArr)
-        console.log(todosArr)
         })
         return ()=> unsubscribe;
-    },[user.uid]) //???????? 
+    },[user.uid,data]) 
+
+    // array of uncompleted tasks
+
     
 
     //update task done or not
 
     const toggleComplete= async (todo)=>{
-        console.log(todo.isDone)
         await updateDoc(doc(db,'users',user.uid,'todos',todo.id),{
             isDone:!todo.isDone
         }) 
     }
     
-
     //delete
 
     const deleteTodo=async(id)=>{
@@ -94,7 +76,7 @@ const Account=()=>{
         <div className='container'>
             <button onClick={handleLogout} className='buttonaccount'>Logout</button>
            
-            <Calendar showDetailsHandle={showDetailsHandle} />
+            <Calendar showDetailsHandle={showDetailsHandle} todos={todos}/>
            
             <div className='todoapp'>
                 <h1 className='welcometext'>Your plans for <br/> {showDetails} {data} </h1>
@@ -104,7 +86,7 @@ const Account=()=>{
                     ))}
                 </ul>
                 <Link className='linktocreate' to='/create'><button  className="addtaskbtn"> <AiOutlinePlus /> Add a new task </button></Link>
-                {todos.length<1? <p className='tasksleft'>No tasks for today</p>: <p className='tasksleft'>{`You have ${todos.length} tasks left`}</p>}
+                {todos.length<1? <p className='tasksleft'>No tasks for the day</p>: <p className='tasksleft'>{`You have ${todos.length} tasks left`}</p>}
             
             </div>
             

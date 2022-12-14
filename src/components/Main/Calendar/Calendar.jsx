@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../Calendar/Calendar.css'
 import {FaArrowAltCircleLeft,FaArrowAltCircleRight} from "react-icons/fa"
 import {
@@ -11,12 +11,20 @@ import {
   addWeeks,
   subWeeks
 } from "date-fns";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "../../../firebase";
+import { UserAuth } from "../../../context/AuthContext";
 
 const Calendar = ({ showDetailsHandle }) => {
+
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [currentWeek, setCurrentWeek] = useState(getWeek(currentMonth));
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [undone,setUndoneLength]=useState([])
 
+  const {user}=UserAuth()
+
+  
 
   const changeWeekHandle = (btnType) => {
    
@@ -36,7 +44,7 @@ const Calendar = ({ showDetailsHandle }) => {
   };
 
   const renderHeader = () => {
-    const dateFormat = "MMM yyyy";
+    const dateFormat = "MMMM yyyy";
    
     return (
       <div className="header cal-row flex-middle">
@@ -66,6 +74,7 @@ const Calendar = ({ showDetailsHandle }) => {
 
 
   const renderCells = () => {
+
     const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
     const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
     const dateFormat = "d";
@@ -89,11 +98,13 @@ const Calendar = ({ showDetailsHandle }) => {
             }`}
             key={day}
             onClick={() => {
-              const dayStr = format(cloneDay, "ccc dd MMM yy");
+              const dayStr = format(cloneDay, "dd.MM.yyyy");
               onDateClickHandle(cloneDay, dayStr);
             }}
           >
             <span className="number">{formattedDate}</span>
+            {/* <div className="circle"></div>
+            <div className=" circle circle2"></div> */}
           </div>
         );
         day = addDays(day, 1);

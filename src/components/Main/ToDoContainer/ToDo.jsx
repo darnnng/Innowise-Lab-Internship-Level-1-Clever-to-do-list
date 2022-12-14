@@ -11,7 +11,7 @@ const ToDo=({todo,toggleComplete,deleteTodo,active,setActive,updateToDo})=>{
         <li class='todorectangle'>
             <div className='row'>
                 <input onChange={()=>toggleComplete(todo)} className="checkbox" type="checkbox" checked={todo.isDone ? 'checked':''}/>
-                <span className="todotext" onClick={()=>toggleComplete(todo)}>{todo.title}</span>
+                <span  className={todo.isDone?"todotext crossed":"todotext"} onClick={()=>toggleComplete(todo)}>{todo.title}</span>
             </div>
             <div>
             <Link  to='/update' state={{todo:todo.id}}><button className='editbtn'>{<FaPencilAlt/>}</button></Link>

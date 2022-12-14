@@ -173,11 +173,30 @@
   .calendar .body .cell .number {
     position: absolute;
     color:#27AE60;
-    padding-left: 5px;
+    padding-left: 35%;
+    padding-top: 8px;
     font-size:46px;
     line-height: 1;
     font-weight: 700;
   }
+
+  .calendar .body .cell .circle {
+    position: absolute;
+    bottom: 10px;
+    left:40%;
+    width:10px;
+    height: 10px;
+    border-radius:50%;
+    background-color:rgb(180, 180, 180);
+    right: 20px;
+  }
+
+  .calendar .body .cell .circle2 {
+    left:53%;
+    background-color:yellow;
+  }
+
+
   
   .calendar .body .disabled {
     color: var(--text-color-light);
