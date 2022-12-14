@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link , useNavigate} from 'react-router-dom'
 import {UserAuth} from '../../context/AuthContext'
-import '../SignIn/signin.css'
+import '../SignIn/signin.scss'
 import people from "../../assets/image111.png"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -57,6 +57,7 @@ const SignUp=()=>{
                     draggable
                     pauseOnHover
                     theme="light" />
+
                     <div className='divinput'>
                         <label className='inputlabel' >Email</label>
                         <input onChange={(e)=>setEmail(e.target.value)} placeholder='Enter email' className='input' type='email'/>

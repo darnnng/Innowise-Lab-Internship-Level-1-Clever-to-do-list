@@ -1,14 +1,13 @@
 import React from 'react'
-import './ToDo.css'
+import './ToDo.scss'
 import {FaRegTrashAlt} from 'react-icons/fa'
 import {FaPencilAlt} from 'react-icons/fa'
-import UpdateToDo from '../CreateUpdate/Updatingtodo'
 import { Link } from 'react-router-dom'
 
-const ToDo=({todo,toggleComplete,deleteTodo,active,setActive,updateToDo})=>{
+const ToDo=({todo,toggleComplete,deleteTodo})=>{
 
     return (
-        <li class='todorectangle'>
+        <li className='todorectangle'>
             <div className='row'>
                 <input onChange={()=>toggleComplete(todo)} className="checkbox" type="checkbox" checked={todo.isDone ? 'checked':''}/>
                 <span  className={todo.isDone?"todotext crossed":"todotext"} onClick={()=>toggleComplete(todo)}>{todo.title}</span>

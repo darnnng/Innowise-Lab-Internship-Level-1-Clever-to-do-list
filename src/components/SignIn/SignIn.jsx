@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {UserAuth} from '../../context/AuthContext'
-import '../SignIn/signin.css'
+import '../SignIn/signin.scss'
 import person from "../../assets/illustration1.png"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -34,7 +34,7 @@ const SignIn=()=>{
                 <img className='imagesignup' src={person} alt="people"></img>
             </div>
             <div className='sign right'>
-                <div>
+                <div className='textsignin'>
                     <h1 className='textsign'>Sign in </h1>
                     <p className='plink plinksignup'>
                         Don't have an account yet?<Link to='/signup' className='link'> Sign up</Link>.

@@ -5,11 +5,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserAuth } from '../../../context/AuthContext'
 import { db } from '../../../firebase'
-import './Createpage.css'
+import './Createpage.scss'
+import { ToastContainer, toast } from 'react-toastify';
 
 const CreateToDo=()=>{
-
-    
 
     const [input,setInput]=useState('')
     const [description,setDescription]=useState('')
@@ -18,9 +17,8 @@ const CreateToDo=()=>{
    
     const createTodo=async(e)=>{
         e.preventDefault(e)
-        if (input ==="") {
-            alert('empty string')
-            //вывести toast с сообщением Empty input
+        if (input ==="" || description==="" || data==="") {
+            toast.error("Empty input. Please fill in all the fields")
             return;
         }
         await addDoc(collection(db,'users',user.uid,'todos'),{
@@ -40,10 +38,21 @@ const CreateToDo=()=>{
             <Link className='linktocreate' to='/account'><button  className='buttonaccount'>BACK</button></Link>
             <div  className='createtodo'>
             <h1 className='welcometext'>Creating task </h1>
+
+            <ToastContainer position="top-right"
+                    autoClose={5000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="light" />
             
             <form className='createform'>
                 <input value={input} onChange={(e)=>setInput(e.target.value)}  className='todoinput' type="text" placeholder="Add todo.." />
-                <textarea value={description} onChange={(e)=>setDescription(e.target.value)} class='tododescription' type='text' placeholder="Add todo description.."/>
+                <textarea value={description} onChange={(e)=>setDescription(e.target.value)} className='tododescription' type='text' placeholder="Add todo description.."/>
                 <p>Date: <input value={data} onChange={(e)=>setData(e.target.value)}  className='datapicker' type="date"></input></p>
             </form>
             

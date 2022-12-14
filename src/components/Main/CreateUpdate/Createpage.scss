@@ -1,3 +1,6 @@
+$dark-gray:#2C3E50;
+$light-gray:#ccc;
+
 .createform {
     margin-top: 40px;
     display:flex;
@@ -7,44 +10,16 @@
 .tododescription {
     
     padding: 15px;
-    border: 1px solid #ccc;
+    border: 1px solid $light-gray;
     border-radius: 3px;
     margin-bottom: 10px;
     min-width: 100%;
     box-sizing: border-box;
     font-family: montserrat;
-    color: #2C3E50;
+    color: $dark-gray;
     font-size: 13px;
     min-height: 200px;
     resize:none;
-}
-
-.todoappmodal {
-  width:100%;
-  max-width:500px;
-  min-height:400px;
-  background-color:#e2fae8;
-  padding:20px;
-  border-radius: 10px;
-
-}
-
-.modal {
-  height:100vh;
-  width:100vw;
-  background-color:rgba(0,0,0,0.6) ;
-  position:fixed;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  opacity:0;
-  pointer-events: none;
-  transition: 0.5s;
-}
-
-.modal.active {
-  pointer-events: all;
-  opacity: 1;
 }
 
 .createtodo {
@@ -64,7 +39,7 @@
   padding-left:5px;
   height:30px;
   margin-left: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid $light-gray;
   font-size: 18px;
-  color: #2C3E50;
+  color: $dark-gray;
 }

@@ -1,16 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,800;1,900&display=swap');
 
+$light-green:#9fdeaf;
+$light-blue:#96dbe2;
+
+
+
 .wrapper {
-   
     display: block;
     margin:auto;
     font-family: 'Raleway', sans-serif;
 }
 
-
 .left {
-    position:fixed;left:0;top:0;width:55%;height:100%;background:linear-gradient(to right, #9fdeaf, #96dbe2);color:#fff;overflow:auto;
+    position:fixed;left:0;top:0;width:55%;height:100%;background:linear-gradient(to right, $light-green, $light-blue);color:#fff;overflow:auto;
     display:flex; justify-content: center;flex-direction: column; align-items:center;
+}
+
+.right {
+    position:fixed;right:0px;top:0;width:40%;height:100%;overflow:auto;display:flex;justify-content: center;flex-direction:column;align-items:center;
 }
 
 .imagelabel {
@@ -21,8 +28,6 @@
     font-weight: bold;
     width:700px;
 }
-
-
 
 .signinlabel {
     font-size:48px;
@@ -36,10 +41,6 @@
     height:460px;
 }
 
-.right {
-    position:fixed;right:0px;top:0;width:40%;height:100%;overflow:auto;display:flex;justify-content: center;flex-direction:column;align-items:center;
-}
-
 .sign {
     width:600px;
     height:500px;
@@ -47,7 +48,7 @@
     }
 
 .textsign {
-    color:#96dbe2;
+    color:$light-blue;
     font-size:46px;
     line-height:32px;
     font-weight: bold;
@@ -95,15 +96,20 @@
   padding-left: 20px;
 }
 
-div.sign.right {
-    box-sizing:initial;
+
+div {
+    .sign {
+        .right {
+            box-sizing:initial;
+        }
+    }
 }
 
 .button {
     font-family: 'Raleway', sans-serif;
     text-transform: uppercase;
     outline: 0;
-    background: #96dbe2;
+    background: $light-blue;
     width: 100%;
     border: 0;
     padding: 15px;
@@ -113,7 +119,10 @@ div.sign.right {
     transition: all 0.3 ease;
     cursor: pointer;
     margin-top: 35px;
+    &:hover {
+        background: #a3cace;
+    }
   }
-  .button:hover,.form button:active,.form button:focus {
+  .form button:active,.form button:focus {
     background: #a3cace;
   }

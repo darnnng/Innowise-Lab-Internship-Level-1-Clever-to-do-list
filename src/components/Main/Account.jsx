@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {UserAuth} from '../../context/AuthContext'
-import '../Main/Account.css'
+import '../Main/Account.scss'
 import ToDo from './ToDoContainer/ToDo'
 import {db} from '../../firebase.js'
 import {AiOutlinePlus} from "react-icons/ai"
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from 'firebase/firestore'
 import Calendar from './Calendar/Calendar'
-import { format, parseISO } from 'date-fns'
+import { format } from 'date-fns'
 
 
 const Account=()=>{
@@ -18,9 +18,9 @@ const Account=()=>{
     const navigate=useNavigate()
 
     const [showDetails, setShowDetails] = useState(false);
-    const [data, setData] = useState(null);
-    const [undone,setUndone]=useState([])
+    const [data, setData] = useState(format(new Date(), 'dd.MM.yyyy'));
 
+    const todosRef=collection(db,'users',`${user.uid}`,'todos')
 
     const showDetailsHandle = (dayStr) => {
         setData(dayStr);
@@ -39,8 +39,7 @@ const Account=()=>{
     //read
 
     useEffect(()=>{
-        const q=query(collection(db,'users',`${user.uid}`,'todos'), where ('time','==',data))
-        console.log('qwery',q)
+        const q=query(todosRef, where ('time','==',data))
         const unsubscribe=onSnapshot(q,(querySnapshot)=>{
             let todosArr=[];
             querySnapshot.forEach((doc)=>{
@@ -51,10 +50,7 @@ const Account=()=>{
         return ()=> unsubscribe;
     },[user.uid,data]) 
 
-    // array of uncompleted tasks
-
     
-
     //update task done or not
 
     const toggleComplete= async (todo)=>{
@@ -66,7 +62,6 @@ const Account=()=>{
     //delete
 
     const deleteTodo=async(id)=>{
-        debugger
         await deleteDoc(doc(db,'users',user.uid,'todos',id))
     }
 
@@ -76,7 +71,7 @@ const Account=()=>{
         <div className='container'>
             <button onClick={handleLogout} className='buttonaccount'>Logout</button>
            
-            <Calendar showDetailsHandle={showDetailsHandle} todos={todos}/>
+            <Calendar showDetailsHandle={showDetailsHandle} todos={todos} data={data}/>
            
             <div className='todoapp'>
                 <h1 className='welcometext'>Your plans for <br/> {showDetails} {data} </h1>

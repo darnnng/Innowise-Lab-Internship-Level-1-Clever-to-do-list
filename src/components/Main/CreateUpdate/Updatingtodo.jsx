@@ -4,9 +4,10 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { UserAuth } from '../../../context/AuthContext'
 import { db } from '../../../firebase'
-import './Createpage.css'
+import './Createpage.scss'
 import { useLocation } from 'react-router-dom'
 import { format, parseISO } from 'date-fns'
+
 
 
 const UpdateToDo=()=>{
@@ -21,7 +22,6 @@ const UpdateToDo=()=>{
 
     const updateToDoBtn= async(e)=>{
         e.preventDefault(e);
-        debugger;
         await updateDoc(doc(db,'users',user.uid,'todos',location.state.todo),{
             description:description,
             title:input,

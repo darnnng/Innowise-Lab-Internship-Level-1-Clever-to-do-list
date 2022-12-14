@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import '../Calendar/Calendar.css'
+import '../Calendar/Calendar.scss'
 import {FaArrowAltCircleLeft,FaArrowAltCircleRight} from "react-icons/fa"
 import {
   format,
@@ -11,18 +11,50 @@ import {
   addWeeks,
   subWeeks
 } from "date-fns";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { db } from "../../../firebase";
 import { UserAuth } from "../../../context/AuthContext";
+import {  collection, onSnapshot, query, where } from 'firebase/firestore'
+import { db } from "../../../firebase";
 
-const Calendar = ({ showDetailsHandle }) => {
+const Calendar = ({ showDetailsHandle, todos,data }) => {
 
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [currentWeek, setCurrentWeek] = useState(getWeek(currentMonth));
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [undone,setUndoneLength]=useState([])
+  const [undone,setUndone]=useState([])
+  const [done,setDone]=useState([])
+
 
   const {user}=UserAuth()
+  const todosRef=collection(db,'users',`${user.uid}`,'todos')
+
+
+  useEffect(()=>{
+    const q=query(todosRef, where ('isDone','==',false),where ('time','==',data))
+    const unsubscribe=onSnapshot(q,(querySnapshot)=>{
+        let undoneArr=[];
+        querySnapshot.forEach((doc)=>{
+            undoneArr.push(doc.data().time)
+        })
+
+    setUndone(undoneArr)
+    console.log(undoneArr)
+    })
+    return ()=> unsubscribe;
+},[user.uid,todos,data])
+
+
+useEffect(()=>{
+  const q=query(todosRef, where ('isDone','==',true),where ('time','==',data))
+  const unsubscribe=onSnapshot(q,(querySnapshot)=>{
+      let doneArr=[];
+      querySnapshot.forEach((doc)=>{
+          doneArr.push({...doc.data(),id:doc.id})
+      })
+console.log(done)
+  setDone(doneArr)
+  })
+  return ()=> unsubscribe;
+},[user.uid,todos,data])
 
   
 
@@ -82,12 +114,12 @@ const Calendar = ({ showDetailsHandle }) => {
     let days = [];
     let day = startDate;
     let formattedDate = "";
+
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
-
-        days.push(
+        days.push (
           <div
             className={`col cell ${
               isSameDay(day, new Date())
@@ -101,12 +133,15 @@ const Calendar = ({ showDetailsHandle }) => {
               const dayStr = format(cloneDay, "dd.MM.yyyy");
               onDateClickHandle(cloneDay, dayStr);
             }}
+
           >
             <span className="number">{formattedDate}</span>
-            {/* <div className="circle"></div>
-            <div className=" circle circle2"></div> */}
+            {undone.length<1 ? "": <div className="circle"></div>}
+            {done.length<1 ? "": <div className="circle circle2"></div>}
+            {/* <div className=" circle circle2"></div> */}
           </div>
         );
+        
         day = addDays(day, 1);
       }
 
@@ -143,7 +178,7 @@ const Calendar = ({ showDetailsHandle }) => {
     <div className="calendar">
       {renderHeader()}
       {renderDays()}
-      {renderCells()}
+      {renderCells() }
       {renderFooter()}
     </div>
   );
