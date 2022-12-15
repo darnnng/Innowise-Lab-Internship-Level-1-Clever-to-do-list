@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import '../Calendar/Calendar.scss'
-import {FaArrowAltCircleLeft,FaArrowAltCircleRight} from "react-icons/fa"
+import { useEffect, useState } from 'react';
+import '../Calendar/Calendar.scss';
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from 'react-icons/fa';
 import {
   format,
   startOfWeek,
@@ -9,62 +9,65 @@ import {
   lastDayOfWeek,
   getWeek,
   addWeeks,
-  subWeeks
-} from "date-fns";
-import { UserAuth } from "../../../context/AuthContext";
-import {  collection, onSnapshot, query, where } from 'firebase/firestore'
-import { db } from "../../../firebase";
+  subWeeks,
+} from 'date-fns';
+import { UserAuth } from '../../../context/AuthContext';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../../../firebase';
 
-const Calendar = ({ showDetailsHandle, todos,data }) => {
-
+const Calendar = ({ showDetailsHandle, todos, data }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [currentWeek, setCurrentWeek] = useState(getWeek(currentMonth));
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [undone,setUndone]=useState([])
-  const [done,setDone]=useState([])
+  const [undone, setUndone] = useState([]);
+  const [done, setDone] = useState([]);
+  let undArr = [];
+  let doneArr = [];
 
+  const { user } = UserAuth();
+  const todosRef = collection(db, 'users', `${user.uid}`, 'todos');
 
-  const {user}=UserAuth()
-  const todosRef=collection(db,'users',`${user.uid}`,'todos')
+  useEffect(() => {
+    const q = query(
+      todosRef,
+      where('isDone', '==', false),
+      where('time', '==', data)
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let undoneArr = [];
+      querySnapshot.forEach((doc) => {
+        undoneArr.push(doc.data().time);
+      });
 
+      setUndone(undoneArr);
+      console.log(undoneArr);
+    });
+    return () => unsubscribe;
+  });
 
-  useEffect(()=>{
-    const q=query(todosRef, where ('isDone','==',false),where ('time','==',data))
-    const unsubscribe=onSnapshot(q,(querySnapshot)=>{
-        let undoneArr=[];
-        querySnapshot.forEach((doc)=>{
-            undoneArr.push(doc.data().time)
-        })
-
-    setUndone(undoneArr)
-    console.log(undoneArr)
-    })
-    return ()=> unsubscribe;
-},[user.uid,todos,data])
-
-
-useEffect(()=>{
-  const q=query(todosRef, where ('isDone','==',true),where ('time','==',data))
-  const unsubscribe=onSnapshot(q,(querySnapshot)=>{
-      let doneArr=[];
-      querySnapshot.forEach((doc)=>{
-          doneArr.push({...doc.data(),id:doc.id})
-      })
-console.log(done)
-  setDone(doneArr)
-  })
-  return ()=> unsubscribe;
-},[user.uid,todos,data])
-
-  
+  useEffect(() => {
+    const q = query(
+      todosRef,
+      where('isDone', '==', true),
+      where('time', '==', data)
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let doneArr = [];
+      querySnapshot.forEach((doc) => {
+        doneArr.push(doc.data().time);
+      });
+      console.log(done);
+      setDone(doneArr);
+    });
+    return () => unsubscribe;
+  });
 
   const changeWeekHandle = (btnType) => {
-   
-    if (btnType === "prev") {
+    if (btnType === 'prev') {
       setCurrentMonth(subWeeks(currentMonth, 1));
       setCurrentWeek(getWeek(subWeeks(currentMonth, 1)));
     }
-    if (btnType === "next") {
+    if (btnType === 'next') {
       setCurrentMonth(addWeeks(currentMonth, 1));
       setCurrentWeek(getWeek(addWeeks(currentMonth, 1)));
     }
@@ -76,8 +79,8 @@ console.log(done)
   };
 
   const renderHeader = () => {
-    const dateFormat = "MMMM yyyy";
-   
+    const dateFormat = 'MMMM yyyy';
+
     return (
       <div className="header cal-row flex-middle">
         <div className="col col-start"></div>
@@ -89,9 +92,8 @@ console.log(done)
     );
   };
 
-
   const renderDays = () => {
-    const dateFormat = "EEE";
+    const dateFormat = 'EEE';
     const days = [];
     let startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
     for (let i = 0; i < 7; i++) {
@@ -104,44 +106,58 @@ console.log(done)
     return <div className="days cal-row">{days}</div>;
   };
 
-
   const renderCells = () => {
-
     const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
+    console.log('start', startDate);
     const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
-    const dateFormat = "d";
+    const dateFormat = 'd';
     const rows = [];
     let days = [];
     let day = startDate;
-    let formattedDate = "";
+    let formattedDate = '';
+    if (undone[0] !== undefined && !undArr.includes(undone[0])) {
+      undArr.push(undone[0]);
+    }
+    if (done[0] !== undefined && !doneArr.includes(done[0])) {
+      doneArr.push(done[0]);
+    }
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
-        days.push (
+        days.push(
           <div
             className={`col cell ${
               isSameDay(day, new Date())
-                ? "today"
+                ? 'today'
                 : isSameDay(day, selectedDate)
-                ? "selected"
-                : ""
+                ? 'selected'
+                : ''
             }`}
             key={day}
             onClick={() => {
-              const dayStr = format(cloneDay, "dd.MM.yyyy");
+              const dayStr = format(cloneDay, 'dd.MM.yyyy');
               onDateClickHandle(cloneDay, dayStr);
             }}
-
           >
             <span className="number">{formattedDate}</span>
-            {undone.length<1 ? "": <div className="circle"></div>}
-            {done.length<1 ? "": <div className="circle circle2"></div>}
+            {undArr.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
+              <div className="circle"></div>
+            ) : (
+              ''
+            )}
+            {doneArr.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
+              <div className="circle circle2"></div>
+            ) : (
+              ''
+            )}
+            {/* {undone.length<1 ? "": <div className="circle"></div>}
+            {done.length<1 ? "": <div className="circle circle2"></div>} */}
             {/* <div className=" circle circle2"></div> */}
           </div>
         );
-        
+
         day = addDays(day, 1);
       }
 
@@ -155,21 +171,22 @@ console.log(done)
     return <div className="body">{rows}</div>;
   };
 
-
   const renderFooter = () => {
     return (
-        <div className="calendar-container">
-            <div className="header cal-row flex-middle">
-                <div className="col col-start">
-                  <div className="icon" onClick={() => changeWeekHandle("prev")}>
-                      <FaArrowAltCircleLeft/>
-                  </div>
-                </div>
-                
-                <div className="col col-end" onClick={() => changeWeekHandle("next")}>
-                  <div className="icon"><FaArrowAltCircleRight/></div>
-                </div>
+      <div className="calendar-container">
+        <div className="header cal-row flex-middle">
+          <div className="col col-start">
+            <div className="icon" onClick={() => changeWeekHandle('prev')}>
+              <FaArrowAltCircleLeft />
             </div>
+          </div>
+
+          <div className="col col-end" onClick={() => changeWeekHandle('next')}>
+            <div className="icon">
+              <FaArrowAltCircleRight />
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -178,7 +195,7 @@ console.log(done)
     <div className="calendar">
       {renderHeader()}
       {renderDays()}
-      {renderCells() }
+      {renderCells()}
       {renderFooter()}
     </div>
   );
