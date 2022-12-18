@@ -33,6 +33,11 @@ users -- [uid] -- todos -- [id] - title,description,isDone,time <br/>
 ## 5.FOLDER STRUCTURE
 
 **Public** folder stores html-file. <br/>
-In **src** folder there are: <br/> -**assets** which stores png-images <br/> -**context** which stores context for authentication <br/> -**components** which stores the main logic of the app. <br/>
+In **src** folder there are: <br/> -**assets** which stores png-images <br/> -**context** which stores context for authentication and theme changing <br/> -**components** which stores the main logic of the app. <br/>
 **main** folder contains the main todo logic and calendar. <br/>
 **signin** and **signup** folders contain the logic for authentication
+
+## ADDITIONAL
+
+To change the theme go to src/context/ThemeContext.js. In line 28 you can change <br/>
+'themes.light' to 'themes.dark' and vice versa

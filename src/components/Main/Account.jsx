@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../context/AuthContext';
 import '../Main/Account.scss';
-import ToDo from './ToDoContainer/ToDo';
+import { ToDo } from './ToDoContainer/ToDo';
 import { db } from '../../firebase.js';
 import { AiOutlinePlus } from 'react-icons/ai';
 import {
@@ -15,13 +15,16 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import Calendar from './Calendar/Calendar';
+import { Calendar } from './Calendar/Calendar';
 import { format } from 'date-fns';
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const Account = () => {
   const [todos, setTodos] = useState([]);
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
+  const theme = useContext(ThemeContext);
 
   const [showDetails, setShowDetails] = useState(false);
   const [data, setData] = useState(format(new Date(), 'dd.MM.yyyy'));
@@ -65,8 +68,12 @@ const Account = () => {
   };
 
   return (
-    <div className="container">
-      <button onClick={handleLogout} className="buttonaccount">
+    <div style={{ background: theme.background }} className="container">
+      <button
+        style={{ background: theme.logout }}
+        onClick={handleLogout}
+        className="buttonaccount"
+      >
         Logout
       </button>
 
@@ -76,8 +83,8 @@ const Account = () => {
         data={data}
       />
 
-      <div className="todoapp">
-        <h1 className="welcometext">
+      <div style={{ background: theme.container }} className="todoapp">
+        <h1 style={{ color: theme.maintextcolor }} className="welcometext">
           Your plans for <br /> {showDetails} {data}{' '}
         </h1>
         <ul>
@@ -91,7 +98,7 @@ const Account = () => {
           ))}
         </ul>
         <Link className="linktocreate" to="/create">
-          <button className="addtaskbtn">
+          <button style={{ background: theme.addbtn }} className="addtaskbtn">
             {' '}
             <AiOutlinePlus /> Add a new task{' '}
           </button>
@@ -106,4 +113,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export { Account };

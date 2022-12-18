@@ -14,6 +14,8 @@ import {
 import { UserAuth } from '../../../context/AuthContext';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import { useContext } from 'react';
+import { ThemeContext } from '../../../context/ThemeContext';
 
 const Calendar = ({ showDetailsHandle, todos, data }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -21,6 +23,8 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [undone, setUndone] = useState([]);
   const [done, setDone] = useState([]);
+  const theme = useContext(ThemeContext);
+
   let undArr = [];
   let doneArr = [];
 
@@ -43,7 +47,7 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
       console.log(undoneArr);
     });
     return () => unsubscribe;
-  });
+  }, [data]);
 
   useEffect(() => {
     const q = query(
@@ -60,7 +64,7 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
       setDone(doneArr);
     });
     return () => unsubscribe;
-  });
+  }, [data]);
 
   const changeWeekHandle = (btnType) => {
     if (btnType === 'prev') {
@@ -85,7 +89,9 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
       <div className="header cal-row flex-middle">
         <div className="col col-start"></div>
         <div className="col col-center">
-          <span>{format(currentMonth, dateFormat)}</span>
+          <span style={{ color: theme.maintextcolor }}>
+            {format(currentMonth, dateFormat)}
+          </span>
         </div>
         <div className="col col-end"></div>
       </div>
@@ -98,7 +104,11 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
     let startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div className="col col-center" key={i}>
+        <div
+          style={{ color: theme.maintextcolor }}
+          className="col col-center"
+          key={i}
+        >
           {format(addDays(startDate, i), dateFormat)}
         </div>
       );
@@ -108,16 +118,17 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
 
   const renderCells = () => {
     const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
-    console.log('start', startDate);
     const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
     const dateFormat = 'd';
     const rows = [];
     let days = [];
     let day = startDate;
     let formattedDate = '';
+
     if (undone[0] !== undefined && !undArr.includes(undone[0])) {
       undArr.push(undone[0]);
     }
+
     if (done[0] !== undefined && !doneArr.includes(done[0])) {
       doneArr.push(done[0]);
     }
@@ -141,12 +152,16 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
               onDateClickHandle(cloneDay, dayStr);
             }}
           >
-            <span className="number">{formattedDate}</span>
+            <span style={{ color: theme.maintextcolor }} className="number">
+              {formattedDate}
+            </span>
+
             {undArr.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
               <div className="circle"></div>
             ) : (
               ''
             )}
+
             {doneArr.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
               <div className="circle circle2"></div>
             ) : (
@@ -173,16 +188,23 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
 
   const renderFooter = () => {
     return (
-      <div className="calendar-container">
+      <div
+        style={{ background: theme.container }}
+        className="calendar-container"
+      >
         <div className="header cal-row flex-middle">
           <div className="col col-start">
-            <div className="icon" onClick={() => changeWeekHandle('prev')}>
+            <div
+              style={{ color: theme.maintextcolor }}
+              className="icon"
+              onClick={() => changeWeekHandle('prev')}
+            >
               <FaArrowAltCircleLeft />
             </div>
           </div>
 
           <div className="col col-end" onClick={() => changeWeekHandle('next')}>
-            <div className="icon">
+            <div style={{ color: theme.maintextcolor }} className="icon">
               <FaArrowAltCircleRight />
             </div>
           </div>
@@ -192,7 +214,7 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
   };
 
   return (
-    <div className="calendar">
+    <div style={{ background: theme.container }} className="calendar">
       {renderHeader()}
       {renderDays()}
       {renderCells()}
@@ -201,4 +223,4 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
   );
 };
 
-export default Calendar;
+export { Calendar };

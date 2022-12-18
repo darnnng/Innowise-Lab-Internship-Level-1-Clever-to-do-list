@@ -5,13 +5,17 @@ import '../SignIn/signin.scss';
 import person from '../../assets/illustration1.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useContext } from 'react';
+import { ThemeContext } from '../../context/ThemeContext';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
   const { signIn } = UserAuth();
   const navigate = useNavigate();
+  const theme = useContext(ThemeContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,13 +31,15 @@ const SignIn = () => {
 
   return (
     <div className="wrapper">
-      <div className="left">
+      <div style={{ background: theme.backgroundleft }} className="left">
         <p className="imagelabel signinlabel"> Welcome back! </p>
         <img className="imagesignup" src={person} alt="people"></img>
       </div>
       <div className="sign right">
         <div className="textsignin">
-          <h1 className="textsign">Sign in </h1>
+          <h1 style={{ color: theme.textsign }} className="textsign">
+            Sign in{' '}
+          </h1>
           <p className="plink plinksignup">
             Don't have an account yet?
             <Link to="/signup" className="link">
@@ -74,11 +80,13 @@ const SignIn = () => {
               type="password"
             />
           </div>
-          <button className="button">Sign In</button>
+          <button style={{ background: theme.signbtn }} className="button">
+            Sign In
+          </button>
         </form>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export { SignIn };
