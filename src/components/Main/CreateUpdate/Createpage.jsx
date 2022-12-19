@@ -11,28 +11,40 @@ import { ThemeContext } from '../../../context/ThemeContext';
 import { useContext } from 'react';
 
 const CreateToDo = () => {
-  const [input, setInput] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [data, setData] = useState('');
+  const [date, setDate] = useState('');
 
   const { user } = UserAuth();
   const theme = useContext(ThemeContext);
 
   const createTodo = async (event) => {
     event.preventDefault(event);
-    if (input === '' || description === '' || data === '') {
+    if (title === '' || description === '' || date === '') {
       toast.error('Empty input. Please fill in all the fields');
       return;
     }
     await addDoc(collection(db, 'users', user.uid, 'todos'), {
-      title: input,
+      title: title,
       isDone: false,
       description: description,
-      time: format(parseISO(data), 'dd.MM.yyyy'),
+      time: format(parseISO(date), 'dd.MM.yyyy'),
     });
-    setInput('');
+    setTitle('');
     setDescription('');
-    setData('');
+    setDate('');
+  };
+
+  const handleTitleInput = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleDescriptionInput = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const handleDateInput = (event) => {
+    setDate(event.target.value);
   };
 
   return (
@@ -60,39 +72,42 @@ const CreateToDo = () => {
           theme="light"
         />
 
-        <form className="createform">
+        <form onSubmit={createTodo} className="createform">
           <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+            value={title}
+            onChange={handleTitleInput}
             className="todoinput"
+            name="title"
             type="text"
             placeholder="Add todo.."
           />
           <textarea
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={handleDescriptionInput}
             className="tododescription"
+            name="description"
             type="text"
             placeholder="Add todo description.."
           />
           <p>
             Date:{' '}
             <input
-              value={data}
-              onChange={(e) => setData(e.target.value)}
+              value={date}
+              onChange={handleDateInput}
               className="datapicker"
+              name="date"
               type="date"
             ></input>
           </p>
-        </form>
 
-        <button
-          style={{ background: theme.addbtn }}
-          onClick={createTodo}
-          className="addtaskbtn"
-        >
-          Save
-        </button>
+          <button
+            style={{ background: theme.addbtn }}
+            type="submit"
+            className="addtaskbtn"
+          >
+            Save
+          </button>
+        </form>
       </div>
     </div>
   );

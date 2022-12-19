@@ -8,7 +8,6 @@ import { db } from '../../firebase.js';
 import { AiOutlinePlus } from 'react-icons/ai';
 import {
   collection,
-  deleteDoc,
   doc,
   onSnapshot,
   query,
@@ -54,16 +53,6 @@ const Account = () => {
     return () => unsubscribe();
   }, [user.uid, date]);
 
-  const toggleComplete = async (todo) => {
-    await updateDoc(doc(db, 'users', user.uid, 'todos', todo.id), {
-      isDone: !todo.isDone,
-    });
-  };
-
-  const deleteTodo = async (id) => {
-    await deleteDoc(doc(db, 'users', user.uid, 'todos', id));
-  };
-
   return (
     <div style={{ background: theme.background }} className="container">
       <button
@@ -85,13 +74,8 @@ const Account = () => {
           Your plans for <br /> {showDetails} {date}{' '}
         </h1>
         <ul>
-          {todos.map((todo, index) => (
-            <ToDo
-              todo={todo}
-              key={index}
-              toggleComplete={toggleComplete}
-              deleteTodo={deleteTodo}
-            />
+          {todos.map((todo, id) => (
+            <ToDo todo={todo} key={id} />
           ))}
         </ul>
         <Link className="linktocreate" to="/create">

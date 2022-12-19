@@ -44,7 +44,6 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
       });
 
       setUndone(undoneArr);
-      console.log(undoneArr);
     });
     return () => unsubscribe();
   }, [date]);
@@ -60,7 +59,6 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
       querySnapshot.forEach((doc) => {
         doneArr.push(doc.data().time);
       });
-      console.log(done);
       setDone(doneArr);
     });
     return () => unsubscribe();
@@ -116,6 +114,11 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
     return <div className="days cal-row">{days}</div>;
   };
 
+  const chooseDay = (cloneDay) => {
+    const dayStr = format(cloneDay, 'dd.MM.yyyy');
+    onDateClickHandle(cloneDay, dayStr);
+  };
+
   const renderCells = () => {
     const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
     const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
@@ -147,10 +150,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
                 : ''
             }`}
             key={day}
-            onClick={() => {
-              const dayStr = format(cloneDay, 'dd.MM.yyyy');
-              onDateClickHandle(cloneDay, dayStr);
-            }}
+            onClick={() => chooseDay(cloneDay)}
           >
             <span style={{ color: theme.maintextcolor }} className="number">
               {formattedDate}

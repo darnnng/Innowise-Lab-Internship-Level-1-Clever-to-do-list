@@ -13,9 +13,9 @@ import { useContext } from 'react';
 const UpdateToDo = () => {
   const location = useLocation();
 
-  const [input, setInput] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [data, setData] = useState('');
+  const [date, setDate] = useState('');
 
   const { user } = UserAuth();
   const theme = useContext(ThemeContext);
@@ -24,12 +24,24 @@ const UpdateToDo = () => {
     event.preventDefault(event);
     await updateDoc(doc(db, 'users', user.uid, 'todos', location.state.todo), {
       description: description,
-      title: input,
-      time: format(parseISO(data), 'dd.MM.yyyy'),
+      title: title,
+      time: format(parseISO(date), 'dd.MM.yyyy'),
     });
-    setInput('');
+    setTitle('');
     setDescription('');
-    setData('');
+    setDate('');
+  };
+
+  const handleTitleInput = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleDescriptionInput = (event) => {
+    setDescription(event.target.value);
+  };
+
+  const handleDateInput = (event) => {
+    setDate(event.target.value);
   };
 
   return (
@@ -48,39 +60,42 @@ const UpdateToDo = () => {
           Updating to do{' '}
         </h1>
 
-        <form className="createform">
+        <form onSubmit={updateToDoBtn} className="createform">
           <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+            value={title}
+            name="title"
+            onChange={handleTitleInput}
             className="todoinput"
             type="text"
             placeholder="New todo title.."
           />
           <textarea
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            class="tododescription"
+            name="description"
+            onChange={handleDescriptionInput}
+            className="tododescription"
             type="text"
             placeholder="New todo description.."
           />
           <p>
             Date:{' '}
             <input
-              value={data}
-              onChange={(e) => setData(e.target.value)}
+              value={date}
+              name="date"
+              onChange={handleDateInput}
               className="datapicker"
               type="date"
             ></input>
           </p>
-        </form>
 
-        <button
-          style={{ background: theme.addbtn }}
-          onClick={updateToDoBtn}
-          className="addtaskbtn"
-        >
-          Update
-        </button>
+          <button
+            style={{ background: theme.addbtn }}
+            type="submit"
+            className="addtaskbtn"
+          >
+            Update
+          </button>
+        </form>
       </div>
     </div>
   );

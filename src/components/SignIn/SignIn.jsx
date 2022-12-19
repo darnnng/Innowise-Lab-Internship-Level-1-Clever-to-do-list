@@ -29,6 +29,14 @@ const SignIn = () => {
     }
   };
 
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
   return (
     <div className="wrapper">
       <div style={{ background: theme.backgroundleft }} className="left">
@@ -66,7 +74,8 @@ const SignIn = () => {
             <label className="inputlabel">Email</label>
             <input
               placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              onChange={handleEmailChange}
               className="input"
               type="email"
             />
@@ -75,7 +84,8 @@ const SignIn = () => {
             <label className="inputlabel">Password</label>
             <input
               placeholder="Enter password"
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              onChange={handlePasswordChange}
               className="input"
               type="password"
             />
