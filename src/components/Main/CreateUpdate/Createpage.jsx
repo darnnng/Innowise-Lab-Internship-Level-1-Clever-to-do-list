@@ -18,8 +18,8 @@ const CreateToDo = () => {
   const { user } = UserAuth();
   const theme = useContext(ThemeContext);
 
-  const createTodo = async (e) => {
-    e.preventDefault(e);
+  const createTodo = async (event) => {
+    event.preventDefault(event);
     if (input === '' || description === '' || data === '') {
       toast.error('Empty input. Please fill in all the fields');
       return;

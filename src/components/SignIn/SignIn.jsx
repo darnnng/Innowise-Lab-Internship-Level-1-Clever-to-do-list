@@ -17,15 +17,15 @@ const SignIn = () => {
   const navigate = useNavigate();
   const theme = useContext(ThemeContext);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError('');
     try {
       await signIn(email, password);
       navigate('/account');
-    } catch (e) {
-      setError(e.message);
-      toast.error(e.message.toString().slice(9));
+    } catch (error) {
+      setError(error.message);
+      toast.error(error.message.toString().slice(9));
     }
   };
 

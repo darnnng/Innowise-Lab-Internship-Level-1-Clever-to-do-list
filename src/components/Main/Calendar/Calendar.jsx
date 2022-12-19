@@ -17,7 +17,7 @@ import { db } from '../../../firebase';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../context/ThemeContext';
 
-const Calendar = ({ showDetailsHandle, todos, data }) => {
+const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [currentWeek, setCurrentWeek] = useState(getWeek(currentMonth));
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -29,15 +29,15 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
   let doneArr = [];
 
   const { user } = UserAuth();
-  const todosRef = collection(db, 'users', `${user.uid}`, 'todos');
+  const todosCollection = collection(db, 'users', `${user.uid}`, 'todos');
 
   useEffect(() => {
-    const q = query(
-      todosRef,
+    const queryTodosUndone = query(
+      todosCollection,
       where('isDone', '==', false),
-      where('time', '==', data)
+      where('time', '==', date)
     );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const unsubscribe = onSnapshot(queryTodosUndone, (querySnapshot) => {
       let undoneArr = [];
       querySnapshot.forEach((doc) => {
         undoneArr.push(doc.data().time);
@@ -46,16 +46,16 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
       setUndone(undoneArr);
       console.log(undoneArr);
     });
-    return () => unsubscribe;
-  }, [data]);
+    return () => unsubscribe();
+  }, [date]);
 
   useEffect(() => {
-    const q = query(
-      todosRef,
+    const queryTodosDone = query(
+      todosCollection,
       where('isDone', '==', true),
-      where('time', '==', data)
+      where('time', '==', date)
     );
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const unsubscribe = onSnapshot(queryTodosDone, (querySnapshot) => {
       let doneArr = [];
       querySnapshot.forEach((doc) => {
         doneArr.push(doc.data().time);
@@ -63,8 +63,8 @@ const Calendar = ({ showDetailsHandle, todos, data }) => {
       console.log(done);
       setDone(doneArr);
     });
-    return () => unsubscribe;
-  }, [data]);
+    return () => unsubscribe();
+  }, [date]);
 
   const changeWeekHandle = (btnType) => {
     if (btnType === 'prev') {

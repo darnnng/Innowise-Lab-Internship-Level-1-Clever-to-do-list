@@ -27,35 +27,32 @@ const Account = () => {
   const theme = useContext(ThemeContext);
 
   const [showDetails, setShowDetails] = useState(false);
-  const [data, setData] = useState(format(new Date(), 'dd.MM.yyyy'));
+  const [date, setDate] = useState(format(new Date(), 'dd.MM.yyyy'));
 
-  const todosRef = collection(db, 'users', `${user.uid}`, 'todos');
+  const todosCollection = collection(db, 'users', `${user.uid}`, 'todos');
 
   const showDetailsHandle = (dayStr) => {
-    setData(dayStr);
+    setDate(dayStr);
     setShowDetails(true);
   };
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/');
-    } catch (e) {
-      console.log(e.message);
-    }
+  const handleLogout = () => {
+    logout()
+      .then(() => navigate('/'))
+      .catch((error) => console.error(error));
   };
 
   useEffect(() => {
-    const q = query(todosRef, where('time', '==', data));
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const tasksQuery = query(todosCollection, where('time', '==', date));
+    const unsubscribe = onSnapshot(tasksQuery, (querySnapshot) => {
       let todosArr = [];
       querySnapshot.forEach((doc) => {
         todosArr.push({ ...doc.data(), id: doc.id });
       });
       setTodos(todosArr);
     });
-    return () => unsubscribe;
-  }, [user.uid, data]);
+    return () => unsubscribe();
+  }, [user.uid, date]);
 
   const toggleComplete = async (todo) => {
     await updateDoc(doc(db, 'users', user.uid, 'todos', todo.id), {
@@ -80,12 +77,12 @@ const Account = () => {
       <Calendar
         showDetailsHandle={showDetailsHandle}
         todos={todos}
-        data={data}
+        date={date}
       />
 
       <div style={{ background: theme.container }} className="todoapp">
         <h1 style={{ color: theme.maintextcolor }} className="welcometext">
-          Your plans for <br /> {showDetails} {data}{' '}
+          Your plans for <br /> {showDetails} {date}{' '}
         </h1>
         <ul>
           {todos.map((todo, index) => (

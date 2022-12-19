@@ -19,8 +19,8 @@ const SignUp = () => {
 
   const { createUser } = UserAuth();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError('');
     try {
       await createUser(email, password);
@@ -28,9 +28,9 @@ const SignUp = () => {
         email: email,
       });
       navigate('/account');
-    } catch (e) {
-      setError(e.message);
-      toast.error(e.message.toString().slice(9));
+    } catch (error) {
+      setError(error.message);
+      toast.error(error.message.toString().slice(9));
     }
   };
 

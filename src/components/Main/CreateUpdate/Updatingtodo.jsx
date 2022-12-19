@@ -20,8 +20,8 @@ const UpdateToDo = () => {
   const { user } = UserAuth();
   const theme = useContext(ThemeContext);
 
-  const updateToDoBtn = async (e) => {
-    e.preventDefault(e);
+  const updateToDoBtn = async (event) => {
+    event.preventDefault(event);
     await updateDoc(doc(db, 'users', user.uid, 'todos', location.state.todo), {
       description: description,
       title: input,
