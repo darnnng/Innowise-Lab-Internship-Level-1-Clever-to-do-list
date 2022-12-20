@@ -5,8 +5,6 @@ import '../SignIn/signin.scss';
 import people from '../../assets/image111.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import { db } from '../../firebase';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
 
@@ -24,9 +22,6 @@ const SignUp = () => {
     setError('');
     try {
       await createUser(email, password);
-      await addDoc(collection(db, 'users'), {
-        email: email,
-      });
       navigate('/account');
     } catch (error) {
       setError(error.message);

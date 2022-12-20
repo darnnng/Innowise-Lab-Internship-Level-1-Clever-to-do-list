@@ -1,14 +1,12 @@
-import { format, parseISO } from 'date-fns';
-import { addDoc, collection } from 'firebase/firestore';
 import React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserAuth } from '../../../context/AuthContext';
-import { db } from '../../../firebase';
 import './Createpage.scss';
 import { ToastContainer, toast } from 'react-toastify';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useContext } from 'react';
+import { todosService } from '../../../API/TodosService';
 
 const CreateToDo = () => {
   const [title, setTitle] = useState('');
@@ -24,12 +22,7 @@ const CreateToDo = () => {
       toast.error('Empty input. Please fill in all the fields');
       return;
     }
-    await addDoc(collection(db, 'users', user.uid, 'todos'), {
-      title: title,
-      isDone: false,
-      description: description,
-      time: format(parseISO(date), 'dd.MM.yyyy'),
-    });
+    await todosService.createTask(user.uid, description, title, date);
     setTitle('');
     setDescription('');
     setDate('');

@@ -3,19 +3,16 @@ import './ToDo.scss';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import { FaPencilAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { db } from '../../../firebase';
 import { UserAuth } from '../../../context/AuthContext';
 import { useState } from 'react';
+import { todosService } from '../../../API/TodosService';
 
 const ToDo = ({ todo }) => {
   const { user } = UserAuth();
   const [checked, setChecked] = useState(todo.isDone);
 
   const toggleComplete = async (todo) => {
-    await updateDoc(doc(db, 'users', user.uid, 'todos', todo.id), {
-      isDone: !todo.isDone,
-    });
+    await todosService.updateIfDone(user.uid, todo);
     setChecked(!checked);
   };
 
@@ -24,7 +21,7 @@ const ToDo = ({ todo }) => {
   };
 
   const deleteTodo = async (id) => {
-    await deleteDoc(doc(db, 'users', user.uid, 'todos', id));
+    await todosService.deleteTask(user.uid, id);
   };
 
   const handleDelete = () => {

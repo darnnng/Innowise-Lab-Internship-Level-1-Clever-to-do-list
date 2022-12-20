@@ -12,10 +12,10 @@ import {
   subWeeks,
 } from 'date-fns';
 import { UserAuth } from '../../../context/AuthContext';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import { db } from '../../../firebase';
+import { onSnapshot } from 'firebase/firestore';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../context/ThemeContext';
+import { todosService } from '../../../API/TodosService';
 
 const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -26,37 +26,32 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const theme = useContext(ThemeContext);
 
   const { user } = UserAuth();
-  const todosCollection = collection(db, 'users', `${user.uid}`, 'todos');
 
   useEffect(() => {
-    const queryTodosUndone = query(
-      todosCollection,
-      where('isDone', '==', false),
-      where('time', '==', date)
+    const unsubscribe = onSnapshot(
+      todosService.getUndoneTodos(user.uid, date),
+      (querySnapshot) => {
+        let undoneArr = [];
+        querySnapshot.forEach((doc) => {
+          undoneArr.push(doc.data().time);
+        });
+        setUndone(undoneArr);
+      }
     );
-    const unsubscribe = onSnapshot(queryTodosUndone, (querySnapshot) => {
-      let undoneArr = [];
-      querySnapshot.forEach((doc) => {
-        undoneArr.push(doc.data().time);
-      });
-      setUndone(undoneArr);
-    });
     return () => unsubscribe();
   }, [date]);
 
   useEffect(() => {
-    const queryTodosDone = query(
-      todosCollection,
-      where('isDone', '==', true),
-      where('time', '==', date)
+    const unsubscribe = onSnapshot(
+      todosService.getDoneTodos(user.uid, date),
+      (querySnapshot) => {
+        let doneArr = [];
+        querySnapshot.forEach((doc) => {
+          doneArr.push(doc.data().time);
+        });
+        setDone(doneArr);
+      }
     );
-    const unsubscribe = onSnapshot(queryTodosDone, (querySnapshot) => {
-      let doneArr = [];
-      querySnapshot.forEach((doc) => {
-        doneArr.push(doc.data().time);
-      });
-      setDone(doneArr);
-    });
     return () => unsubscribe();
   }, [date]);
 

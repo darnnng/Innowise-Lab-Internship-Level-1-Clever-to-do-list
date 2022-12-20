@@ -4,20 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../context/AuthContext';
 import '../Main/Account.scss';
 import { ToDo } from './ToDoContainer/ToDo';
-import { db } from '../../firebase.js';
 import { AiOutlinePlus } from 'react-icons/ai';
-import {
-  collection,
-  doc,
-  onSnapshot,
-  query,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+import { onSnapshot } from 'firebase/firestore';
 import { Calendar } from './Calendar/Calendar';
 import { format } from 'date-fns';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
+import { todosService } from '../../API/TodosService';
 
 const Account = () => {
   const [todos, setTodos] = useState([]);
@@ -27,8 +20,6 @@ const Account = () => {
 
   const [showDetails, setShowDetails] = useState(false);
   const [date, setDate] = useState(format(new Date(), 'dd.MM.yyyy'));
-
-  const todosCollection = collection(db, 'users', `${user.uid}`, 'todos');
 
   const showDetailsHandle = (dayStr) => {
     setDate(dayStr);
@@ -42,14 +33,16 @@ const Account = () => {
   };
 
   useEffect(() => {
-    const tasksQuery = query(todosCollection, where('time', '==', date));
-    const unsubscribe = onSnapshot(tasksQuery, (querySnapshot) => {
-      let todosArr = [];
-      querySnapshot.forEach((doc) => {
-        todosArr.push({ ...doc.data(), id: doc.id });
-      });
-      setTodos(todosArr);
-    });
+    const unsubscribe = onSnapshot(
+      todosService.getTodos(user.uid, date),
+      (querySnapshot) => {
+        let todosArr = [];
+        querySnapshot.forEach((doc) => {
+          todosArr.push({ ...doc.data(), id: doc.id });
+        });
+        setTodos(todosArr);
+      }
+    );
     return () => unsubscribe();
   }, [user.uid, date]);
 

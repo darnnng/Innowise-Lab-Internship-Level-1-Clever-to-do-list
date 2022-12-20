@@ -1,13 +1,11 @@
-import { doc, updateDoc } from 'firebase/firestore';
 import React from 'react';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { UserAuth } from '../../../context/AuthContext';
-import { db } from '../../../firebase';
 import './Createpage.scss';
-import { format, parseISO } from 'date-fns';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useContext } from 'react';
+import { todosService } from '../../../API/TodosService';
 
 const UpdateToDo = () => {
   const { taskId } = useParams();
@@ -21,11 +19,7 @@ const UpdateToDo = () => {
 
   const updateTask = async (event) => {
     event.preventDefault(event);
-    await updateDoc(doc(db, 'users', user.uid, 'todos', taskId), {
-      description: description,
-      title: title,
-      time: format(parseISO(date), 'dd.MM.yyyy'),
-    });
+    await todosService.updateTask(user.uid, taskId, description, title, date);
     setTitle('');
     setDescription('');
     setDate('');
