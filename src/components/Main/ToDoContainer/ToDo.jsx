@@ -6,10 +6,12 @@ import { Link } from 'react-router-dom';
 import { UserAuth } from '../../../context/AuthContext';
 import { useState } from 'react';
 import { todosService } from '../../../API/TodosService';
+import Modal from './Modal/modal';
 
 const ToDo = ({ todo }) => {
   const { user } = UserAuth();
   const [checked, setChecked] = useState(todo.isDone);
+  const [modalActive, setModalActive] = useState(false);
 
   const toggleComplete = async (todo) => {
     await todosService.updateIfDone(user.uid, todo);
@@ -28,8 +30,19 @@ const ToDo = ({ todo }) => {
     deleteTodo(todo.id);
   };
 
+  const handleShowModal = () => {
+    setModalActive(true);
+  };
+
   return (
     <li className="todorectangle">
+      <Modal
+        active={modalActive}
+        setActive={setModalActive}
+        title={todo.title}
+        description={todo.description}
+        date={todo.time}
+      />
       <div className="row">
         <input
           onChange={handleComplete}
@@ -40,7 +53,7 @@ const ToDo = ({ todo }) => {
         />
         <span
           className={todo.isDone ? 'todotext crossed' : 'todotext'}
-          onClick={handleComplete}
+          onClick={handleShowModal}
         >
           {todo.title}
         </span>
