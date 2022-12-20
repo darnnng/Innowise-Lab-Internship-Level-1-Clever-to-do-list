@@ -25,9 +25,6 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [done, setDone] = useState([]);
   const theme = useContext(ThemeContext);
 
-  let undArr = [];
-  let doneArr = [];
-
   const { user } = UserAuth();
   const todosCollection = collection(db, 'users', `${user.uid}`, 'todos');
 
@@ -42,7 +39,6 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
       querySnapshot.forEach((doc) => {
         undoneArr.push(doc.data().time);
       });
-
       setUndone(undoneArr);
     });
     return () => unsubscribe();
@@ -128,14 +124,6 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
     let day = startDate;
     let formattedDate = '';
 
-    if (undone[0] !== undefined && !undArr.includes(undone[0])) {
-      undArr.push(undone[0]);
-    }
-
-    if (done[0] !== undefined && !doneArr.includes(done[0])) {
-      doneArr.push(done[0]);
-    }
-
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
@@ -156,20 +144,17 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
               {formattedDate}
             </span>
 
-            {undArr.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
+            {undone.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
               <div className="circle"></div>
             ) : (
               ''
             )}
 
-            {doneArr.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
+            {done.includes(format(cloneDay, 'dd.MM.yyyy')) ? (
               <div className="circle circle2"></div>
             ) : (
               ''
             )}
-            {/* {undone.length<1 ? "": <div className="circle"></div>}
-            {done.length<1 ? "": <div className="circle circle2"></div>} */}
-            {/* <div className=" circle circle2"></div> */}
           </div>
         );
 

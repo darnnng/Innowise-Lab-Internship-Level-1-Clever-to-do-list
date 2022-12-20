@@ -49,7 +49,7 @@ const ToDo = ({ todo }) => {
         </span>
       </div>
       <div>
-        <Link to="/update" state={{ todo: todo.id }}>
+        <Link to={`/update/${todo.id}`}>
           <button className="editbtn">{<FaPencilAlt />}</button>
         </Link>
         <button onClick={handleDelete} className="trashbtn">

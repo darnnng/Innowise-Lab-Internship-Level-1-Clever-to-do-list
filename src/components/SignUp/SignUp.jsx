@@ -89,7 +89,11 @@ const SignUp = () => {
               type="password"
             />
           </div>
-          <button style={{ background: theme.signbtn }} className="button">
+          <button
+            type="submit"
+            style={{ background: theme.signbtn }}
+            className="button"
+          >
             Sign Up
           </button>
         </form>

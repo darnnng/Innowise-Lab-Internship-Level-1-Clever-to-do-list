@@ -1,17 +1,16 @@
 import { doc, updateDoc } from 'firebase/firestore';
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { UserAuth } from '../../../context/AuthContext';
 import { db } from '../../../firebase';
 import './Createpage.scss';
-import { useLocation } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { useContext } from 'react';
 
 const UpdateToDo = () => {
-  const location = useLocation();
+  const { taskId } = useParams();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -20,9 +19,9 @@ const UpdateToDo = () => {
   const { user } = UserAuth();
   const theme = useContext(ThemeContext);
 
-  const updateToDoBtn = async (event) => {
+  const updateTask = async (event) => {
     event.preventDefault(event);
-    await updateDoc(doc(db, 'users', user.uid, 'todos', location.state.todo), {
+    await updateDoc(doc(db, 'users', user.uid, 'todos', taskId), {
       description: description,
       title: title,
       time: format(parseISO(date), 'dd.MM.yyyy'),
@@ -60,7 +59,7 @@ const UpdateToDo = () => {
           Updating to do{' '}
         </h1>
 
-        <form onSubmit={updateToDoBtn} className="createform">
+        <form onSubmit={updateTask} className="createform">
           <input
             value={title}
             name="title"

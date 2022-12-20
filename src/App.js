@@ -38,7 +38,7 @@ function App() {
               }
             />
             <Route
-              path="/update"
+              path="/update/:taskId"
               element={
                 <ProtectedRoute>
                   <UpdateToDo />
