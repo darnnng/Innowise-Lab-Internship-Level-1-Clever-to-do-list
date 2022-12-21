@@ -7,7 +7,6 @@ import {
   addDays,
   isSameDay,
   lastDayOfWeek,
-  getWeek,
   addWeeks,
   subWeeks,
 } from 'date-fns';
@@ -19,7 +18,6 @@ import { todosService } from '../../../API/TodosService';
 
 const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [currentWeek, setCurrentWeek] = useState(getWeek(currentMonth));
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [undone, setUndone] = useState([]);
   const [done, setDone] = useState([]);
@@ -58,11 +56,9 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const changeWeekHandle = (btnType) => {
     if (btnType === 'prev') {
       setCurrentMonth(subWeeks(currentMonth, 1));
-      setCurrentWeek(getWeek(subWeeks(currentMonth, 1)));
     }
     if (btnType === 'next') {
       setCurrentMonth(addWeeks(currentMonth, 1));
-      setCurrentWeek(getWeek(addWeeks(currentMonth, 1)));
     }
   };
 
@@ -91,6 +87,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
     const dateFormat = 'EEE';
     const days = [];
     let startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
+
     for (let i = 0; i < 7; i++) {
       days.push(
         <div
@@ -113,6 +110,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const renderCells = () => {
     const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
     const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
+
     const dateFormat = 'd';
     const rows = [];
     let days = [];
