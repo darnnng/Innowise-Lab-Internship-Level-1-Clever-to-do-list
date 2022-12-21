@@ -9,6 +9,7 @@ import {
   lastDayOfWeek,
   addWeeks,
   subWeeks,
+  getISODay,
 } from 'date-fns';
 import { UserAuth } from '../../../context/AuthContext';
 import { onSnapshot } from 'firebase/firestore';
@@ -21,8 +22,8 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [undone, setUndone] = useState([]);
   const [done, setDone] = useState([]);
-  const theme = useContext(ThemeContext);
 
+  const theme = useContext(ThemeContext);
   const { user } = UserAuth();
 
   useEffect(() => {
@@ -86,8 +87,9 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const renderDays = () => {
     const dateFormat = 'EEE';
     const days = [];
-    let startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
-
+    const startDate = startOfWeek(currentMonth, {
+      weekStartsOn: getISODay(new Date()),
+    });
     for (let i = 0; i < 7; i++) {
       days.push(
         <div
@@ -108,8 +110,12 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   };
 
   const renderCells = () => {
-    const startDate = startOfWeek(currentMonth, { weekStartsOn: 1 });
-    const endDate = lastDayOfWeek(currentMonth, { weekStartsOn: 1 });
+    const startDate = startOfWeek(currentMonth, {
+      weekStartsOn: getISODay(new Date()),
+    });
+    const endDate = lastDayOfWeek(currentMonth, {
+      weekStartsOn: getISODay(new Date()),
+    });
 
     const dateFormat = 'd';
     const rows = [];
