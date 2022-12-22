@@ -13,7 +13,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const theme = useContext(ThemeContext);
+  const { isDarkTheme } = useContext(ThemeContext);
 
   const { createUser } = UserAuth();
 
@@ -29,9 +29,17 @@ const SignUp = () => {
     }
   };
 
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
   return (
     <div className="wrapper">
-      <div style={{ background: theme.backgroundleft }} className="left">
+      <div className={isDarkTheme === true ? 'left' : 'left dark'}>
         <p className="imagelabel">
           {' '}
           Make your life more organized. Sign up for free.
@@ -40,7 +48,7 @@ const SignUp = () => {
       </div>
       <div className="sign right">
         <div>
-          <h1 style={{ color: theme.textsign }} className="textsign">
+          <h1 className={isDarkTheme === true ? 'textsign' : 'textsign dark'}>
             Create new account
           </h1>
           <p className="plink">
@@ -69,7 +77,7 @@ const SignUp = () => {
           <div className="divinput">
             <label className="inputlabel">Email</label>
             <input
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               placeholder="Enter email"
               className="input"
               type="email"
@@ -78,7 +86,7 @@ const SignUp = () => {
           <div className="divinput">
             <label className="inputlabel">Password</label>
             <input
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               placeholder="Enter password"
               className="input"
               type="password"
@@ -86,8 +94,7 @@ const SignUp = () => {
           </div>
           <button
             type="submit"
-            style={{ background: theme.signbtn }}
-            className="button"
+            className={isDarkTheme === true ? 'button' : 'button dark'}
           >
             Sign Up
           </button>

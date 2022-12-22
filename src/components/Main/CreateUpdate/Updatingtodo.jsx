@@ -15,7 +15,7 @@ const UpdateToDo = () => {
   const [date, setDate] = useState('');
 
   const { user } = UserAuth();
-  const theme = useContext(ThemeContext);
+  const { isDarkTheme } = useContext(ThemeContext);
 
   const updateTask = async (event) => {
     event.preventDefault(event);
@@ -38,17 +38,20 @@ const UpdateToDo = () => {
   };
 
   return (
-    <div style={{ background: theme.background }} className="container">
+    <div className={isDarkTheme === true ? 'container' : 'container dark'}>
       <Link className="linktocreate" to="/account">
-        <button style={{ background: theme.logout }} className="buttonaccount">
+        <button
+          className={
+            isDarkTheme === true ? 'buttonaccount' : 'buttonaccount dark'
+          }
+        >
           BACK
         </button>
       </Link>
-      <div
-        style={{ background: theme.container }}
-        className="todoapp createtodo"
-      >
-        <h1 style={{ color: theme.maintextcolor }} className="welcometext">
+      <div className={isDarkTheme === true ? 'createtodo' : 'createtodo dark'}>
+        <h1
+          className={isDarkTheme === true ? 'welcometext' : 'welcometext dark'}
+        >
           {' '}
           Updating to do{' '}
         </h1>
@@ -82,9 +85,8 @@ const UpdateToDo = () => {
           </p>
 
           <button
-            style={{ background: theme.addbtn }}
+            className={isDarkTheme === true ? 'addtaskbtn' : 'addtaskbtn dark'}
             type="submit"
-            className="addtaskbtn"
           >
             Update
           </button>

@@ -17,6 +17,14 @@ export class TodosService {
     return todosQuery;
   }
 
+  setTodosList(querySnapshot) {
+    let todosArr = [];
+    querySnapshot.forEach((doc) => {
+      todosArr.push({ ...doc.data(), id: doc.id });
+    });
+    return todosArr;
+  }
+
   getUndoneTodos(userId, date) {
     const todosCollection = collection(db, 'users', `${userId}`, 'todos');
     const todosUndoneQuery = query(

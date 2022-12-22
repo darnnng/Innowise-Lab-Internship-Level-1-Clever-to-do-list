@@ -23,7 +23,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [undone, setUndone] = useState([]);
   const [done, setDone] = useState([]);
 
-  const theme = useContext(ThemeContext);
+  const { isDarkTheme } = useContext(ThemeContext);
   const { user } = UserAuth();
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
       <div className="header cal-row flex-middle">
         <div className="col col-start"></div>
         <div className="col col-center">
-          <span style={{ color: theme.maintextcolor }}>
+          <span className={isDarkTheme === true ? 'spandate' : 'spandate dark'}>
             {format(currentMonth, dateFormat)}
           </span>
         </div>
@@ -93,8 +93,9 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
     for (let i = 0; i < 7; i++) {
       days.push(
         <div
-          style={{ color: theme.maintextcolor }}
-          className="col col-center"
+          className={
+            isDarkTheme === true ? 'col col-center' : 'col col-center dark'
+          }
           key={i}
         >
           {format(addDays(startDate, i), dateFormat)}
@@ -139,7 +140,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
             key={day}
             onClick={() => chooseDay(cloneDay)}
           >
-            <span style={{ color: theme.maintextcolor }} className="number">
+            <span className={isDarkTheme === true ? 'number' : 'number dark'}>
               {formattedDate}
             </span>
 
@@ -173,14 +174,16 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const renderFooter = () => {
     return (
       <div
-        style={{ background: theme.container }}
-        className="calendar-container"
+        className={
+          isDarkTheme === true
+            ? 'calendar-container'
+            : 'calendar-container dark'
+        }
       >
         <div className="header cal-row flex-middle">
           <div className="col col-start">
             <div
-              style={{ color: theme.maintextcolor }}
-              className="icon"
+              className={isDarkTheme === true ? 'icon' : 'icon dark'}
               onClick={() => changeWeekHandle('prev')}
             >
               <FaArrowAltCircleLeft />
@@ -188,7 +191,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
           </div>
 
           <div className="col col-end" onClick={() => changeWeekHandle('next')}>
-            <div style={{ color: theme.maintextcolor }} className="icon">
+            <div className={isDarkTheme === true ? 'icon' : 'icon dark'}>
               <FaArrowAltCircleRight />
             </div>
           </div>
@@ -198,7 +201,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   };
 
   return (
-    <div style={{ background: theme.container }} className="calendar">
+    <div className={isDarkTheme === true ? 'calendar' : 'calendar dark'}>
       {renderHeader()}
       {renderDays()}
       {renderCells()}

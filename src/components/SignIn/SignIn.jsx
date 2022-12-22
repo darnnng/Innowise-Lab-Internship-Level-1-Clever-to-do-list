@@ -15,7 +15,7 @@ const SignIn = () => {
 
   const { signIn } = UserAuth();
   const navigate = useNavigate();
-  const theme = useContext(ThemeContext);
+  const { isDarkTheme } = useContext(ThemeContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,13 +39,13 @@ const SignIn = () => {
 
   return (
     <div className="wrapper">
-      <div style={{ background: theme.backgroundleft }} className="left">
+      <div className={isDarkTheme === true ? 'left' : 'left dark'}>
         <p className="imagelabel signinlabel"> Welcome back! </p>
         <img className="imagesignup" src={person} alt="people"></img>
       </div>
       <div className="sign right">
         <div className="textsignin">
-          <h1 style={{ color: theme.textsign }} className="textsign">
+          <h1 className={isDarkTheme === true ? 'textsign' : 'textsign dark'}>
             Sign in{' '}
           </h1>
           <p className="plink plinksignup">
@@ -92,8 +92,7 @@ const SignIn = () => {
           </div>
           <button
             type="submit"
-            style={{ background: theme.signbtn }}
-            className="button"
+            className={isDarkTheme === true ? 'button' : 'button dark'}
           >
             Sign In
           </button>

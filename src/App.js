@@ -8,16 +8,13 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import { CreateToDo } from './components/Main/CreateUpdate/Createpage.jsx';
 import { UpdateToDo } from './components/Main/CreateUpdate/Updatingtodo.jsx';
 import './components/Main/Account.scss';
-import { useContext } from 'react';
-import { ThemeContext } from './context/ThemeContext.js';
+import { ThemeProvider } from './context/ThemeContext.js';
 
 function App() {
-  const theme = useContext(ThemeContext);
-
   return (
     <div>
       <AuthContextProvider>
-        <ThemeContext.Provider value={theme}>
+        <ThemeProvider>
           <Routes>
             <Route path="/" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
@@ -46,7 +43,7 @@ function App() {
               }
             />
           </Routes>
-        </ThemeContext.Provider>
+        </ThemeProvider>
       </AuthContextProvider>
     </div>
   );

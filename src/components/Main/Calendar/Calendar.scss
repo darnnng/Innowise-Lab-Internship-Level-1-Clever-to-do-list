@@ -10,9 +10,17 @@ $gray-circle: rgb(180, 180, 180);
   border-radius: 10px;
 }
 
+.calendar-container.dark {
+  background-color: #b0a9c6;
+}
+
 .icon {
   color: $dark-green;
   font-size: 28px;
+}
+
+.icon.dark {
+  color: #4c4177;
 }
 
 body {
@@ -35,6 +43,10 @@ header {
       padding-right: 0.25em;
     }
   }
+}
+
+.spandate.dark {
+  color: #4c4177;
 }
 
 main {
@@ -73,6 +85,10 @@ main {
   span {
     font-size: 36px;
   }
+}
+
+.col.col-center.dark {
+  color: #4c4177;
 }
 
 .col-end {
@@ -139,6 +155,9 @@ main {
       line-height: 1;
       font-weight: 700;
     }
+    .number.dark {
+      color: #4c4177;
+    }
     .selected {
       transition: 0.1s;
       border: 3px solid $light-green;
@@ -199,6 +218,10 @@ main {
       }
     }
   }
+}
+
+.calendar.dark {
+  background-color: #b0a9c6;
 }
 
 .flex-middle {

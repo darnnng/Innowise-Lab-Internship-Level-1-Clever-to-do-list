@@ -24,6 +24,10 @@ $light-blue: #96dbe2;
   align-items: center;
 }
 
+.left.dark {
+  background: linear-gradient(to right, #2a5470, #4c4177);
+}
+
 .right {
   position: fixed;
   right: 0px;
@@ -70,6 +74,10 @@ $light-blue: #96dbe2;
   line-height: 32px;
   font-weight: bold;
   padding-top: 8px;
+}
+
+.textsign.dark {
+  color: #4c4177;
 }
 
 .plink {
@@ -137,6 +145,10 @@ div {
   &:hover {
     background: #a3cace;
   }
+}
+
+.button.dark {
+  background: #4c4177;
 }
 .form button:active,
 .form button:focus {
