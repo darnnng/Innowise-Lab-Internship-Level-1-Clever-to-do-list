@@ -7,6 +7,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useContext } from 'react';
 import { ThemeContext } from '../../context/ThemeContext';
+import { format, parseISO } from 'date-fns';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');

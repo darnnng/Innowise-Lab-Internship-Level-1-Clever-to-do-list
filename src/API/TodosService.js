@@ -26,6 +26,8 @@ export class TodosService {
   }
 
   getUndoneTodos(userId, date) {
+    // let newdate = new Date();
+    // let dateWeekAfter=format(newdate.setDate(newdate.getDate() + 7), 'dd.MM.yyyy');
     const todosCollection = collection(db, 'users', `${userId}`, 'todos');
     const todosUndoneQuery = query(
       todosCollection,
