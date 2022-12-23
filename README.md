@@ -14,6 +14,9 @@ To get all the dependencies installed.
 
 To start the app in browser
 
+### deploy
+https://todolistinno.netlify.app/
+
 ## 3.DATABASE SNAPSHOT
 
 The authentication of users is done via email/password.
@@ -39,5 +42,5 @@ In **src** folder there are: <br/> -**assets** which stores png-images <br/> -**
 
 ## ADDITIONAL
 
-To change the theme go to src/context/ThemeContext.js. In line 28 you can change <br/>
-'themes.light' to 'themes.dark' and vice versa
+To change the theme go to src/context/ThemeContext.js. In line 6 you can change <br/>
+'useState(true)' to 'useState(false)' and vice versa
