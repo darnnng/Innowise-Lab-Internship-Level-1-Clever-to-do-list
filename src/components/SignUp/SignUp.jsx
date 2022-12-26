@@ -52,7 +52,7 @@ const SignUp = () => {
           <h1 className={isDarkTheme === true ? 'textsign' : 'textsign dark'}>
             Create new account
           </h1>
-          <p className="plink">
+          <p className="plink  plinksignin">
             Already have an account?
             <Link to="/" className="link">
               {' '}

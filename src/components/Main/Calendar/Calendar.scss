@@ -227,3 +227,33 @@ main {
 .flex-middle {
   padding: 5px 0px;
 }
+
+@media (max-width: 1020px) {
+  .col-center span {
+    font-size: 22px;
+  }
+
+  .calendar .cell .number {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 700px) {
+  .col-center span {
+    font-size: 16px;
+  }
+
+  .calendar .cell .number {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 600px) {
+  .todoapp {
+    max-width: 320px;
+  }
+
+  .createtodo {
+    max-width: 320px;
+  }
+}

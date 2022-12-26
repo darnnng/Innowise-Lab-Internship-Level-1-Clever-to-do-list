@@ -154,3 +154,113 @@ div {
 .form button:focus {
   background: #a3cace;
 }
+
+@media (max-width: 1360px) {
+  .imagesignup {
+    width: 470px;
+    height: 300px;
+  }
+
+  .input {
+    width: 300px;
+  }
+
+  .sign {
+    width: 450px;
+  }
+
+  .signinlabel {
+    margin-top: -90px;
+  }
+
+  .plinksignup {
+    padding-right: 80px;
+  }
+
+  .plinksignin {
+    padding-right: 0px;
+    padding-left: 55px;
+  }
+
+  .textsign {
+    padding-left: 55px;
+  }
+
+  .imagelabel {
+    width: 450px;
+  }
+}
+
+@media (max-width: 960px) {
+  .imagesignup {
+    width: 300px;
+    height: 180px;
+  }
+  .imagelabel {
+    font-size: 40px;
+    width: 300px;
+  }
+
+  .signinlabel {
+    margin-top: -100px;
+  }
+
+  .input {
+    width: 200px;
+  }
+
+  .sign {
+    width: 320px;
+  }
+
+  .plinksignup {
+    padding-left: 40px;
+  }
+
+  .plinksignin {
+    padding-right: 0px;
+    padding-left: 45px;
+  }
+
+  .textsign {
+    padding-left: 40px;
+  }
+}
+
+@media (max-width: 700px) {
+  .signinlabel {
+    margin-top: -100px;
+  }
+
+  .input {
+    width: 240px;
+  }
+
+  .left {
+    width: 0%;
+  }
+
+  .right {
+    width: 100%;
+    position: static;
+    margin: auto;
+  }
+
+  .sign {
+    width: 320px;
+  }
+
+  .plinksignup {
+    padding-left: 20px;
+  }
+
+  .plinksignin {
+    padding-right: 0px;
+    padding-left: 20px;
+  }
+
+  .textsign {
+    padding-left: 20px;
+    font-size: 36px;
+  }
+}

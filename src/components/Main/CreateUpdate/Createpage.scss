@@ -46,3 +46,9 @@ $light-gray: #ccc;
   font-size: 18px;
   color: $dark-gray;
 }
+
+@media (max-width: 600px) {
+  .createtodo {
+    max-width: 320px;
+  }
+}
