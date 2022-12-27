@@ -13,16 +13,25 @@ const UpdateToDo = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
+  const [time, setTime] = useState();
 
   const { user } = UserAuth();
   const { isDarkTheme } = useContext(ThemeContext);
 
   const updateTask = async (event) => {
     event.preventDefault(event);
-    await todosService.updateTask(user.uid, taskId, description, title, date);
+    await todosService.updateTask(
+      user.uid,
+      taskId,
+      description,
+      title,
+      date,
+      time
+    );
     setTitle('');
     setDescription('');
     setDate('');
+    setTime();
   };
 
   const handleTitleInput = (event) => {
@@ -35,6 +44,7 @@ const UpdateToDo = () => {
 
   const handleDateInput = (event) => {
     setDate(event.target.value);
+    setTime(new Date(event.target.value).getTime());
   };
 
   return (

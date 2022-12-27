@@ -22,13 +22,14 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [undone, setUndone] = useState([]);
   const [done, setDone] = useState([]);
+  const [time, setTime] = useState(Date.parse(new Date()));
 
   const { isDarkTheme } = useContext(ThemeContext);
   const { user } = UserAuth();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      todosService.getUndoneTodos(user.uid, date),
+      todosService.getUndoneTodos(user.uid, date, time),
       (querySnapshot) => {
         let undoneArr = [];
         querySnapshot.forEach((doc) => {

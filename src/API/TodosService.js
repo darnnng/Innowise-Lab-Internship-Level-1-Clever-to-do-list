@@ -8,7 +8,9 @@ import {
   where,
 } from 'firebase/firestore';
 import { db } from '../firebase';
-import { format, parseISO } from 'date-fns';
+import { format, getISODay, parseISO } from 'date-fns';
+
+export let TodosObject;
 
 export class TodosService {
   getTodos(userId, date) {
@@ -26,23 +28,28 @@ export class TodosService {
   }
 
   getUndoneTodos(userId, date) {
-    // let newdate = new Date();
-    // let dateWeekAfter=format(newdate.setDate(newdate.getDate() + 7), 'dd.MM.yyyy');
     const todosCollection = collection(db, 'users', `${userId}`, 'todos');
+    // let year = +date.toString().slice(6, 10);
+    // let month = +date.toString().slice(3, 5) - 1;
+    // let day = +date.toString().slice(0, 2);
+    // let seconds = new Date(year, month, day).getTime();
+    let seconds = new Date().getTime() - 86400000;
+
     const todosUndoneQuery = query(
       todosCollection,
       where('isDone', '==', false),
-      where('time', '==', date)
+      where('seconds', '>=', seconds)
     );
     return todosUndoneQuery;
   }
 
   getDoneTodos(userId, date) {
     const todosCollection = collection(db, 'users', `${userId}`, 'todos');
+    let seconds = new Date().getTime() - 86400000;
     const todosDoneQuery = query(
       todosCollection,
       where('isDone', '==', true),
-      where('time', '==', date)
+      where('seconds', '>=', seconds)
     );
     return todosDoneQuery;
   }
@@ -57,20 +64,22 @@ export class TodosService {
     });
   }
 
-  updateTask(userId, taskId, description, title, date) {
+  updateTask(userId, taskId, description, title, date, time) {
     return updateDoc(doc(db, 'users', userId, 'todos', taskId), {
       description: description,
       title: title,
       time: format(parseISO(date), 'dd.MM.yyyy'),
+      seconds: time,
     });
   }
 
-  createTask(userId, description, title, date) {
+  createTask(userId, description, title, date, time) {
     return addDoc(collection(db, 'users', userId, 'todos'), {
       title: title,
       isDone: false,
       description: description,
       time: format(parseISO(date), 'dd.MM.yyyy'),
+      seconds: time,
     });
   }
 }

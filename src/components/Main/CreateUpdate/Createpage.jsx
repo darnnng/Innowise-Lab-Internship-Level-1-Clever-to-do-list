@@ -12,6 +12,7 @@ const CreateToDo = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
+  const [time, setTime] = useState();
 
   const { user } = UserAuth();
   const { isDarkTheme } = useContext(ThemeContext);
@@ -22,10 +23,11 @@ const CreateToDo = () => {
       toast.error('Empty input. Please fill in all the fields');
       return;
     }
-    await todosService.createTask(user.uid, description, title, date);
+    await todosService.createTask(user.uid, description, title, date, time);
     setTitle('');
     setDescription('');
     setDate('');
+    setTime();
   };
 
   const handleTitleInput = (event) => {
@@ -38,6 +40,7 @@ const CreateToDo = () => {
 
   const handleDateInput = (event) => {
     setDate(event.target.value);
+    setTime(new Date(event.target.value).getTime());
   };
 
   return (
