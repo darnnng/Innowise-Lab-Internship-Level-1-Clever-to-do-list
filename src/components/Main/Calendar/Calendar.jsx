@@ -16,6 +16,11 @@ import { onSnapshot } from 'firebase/firestore';
 import { useContext } from 'react';
 import { ThemeContext } from '../../../context/ThemeContext';
 import { todosService } from '../../../API/TodosService';
+import { useRef } from 'react';
+import Observer from './Observer';
+import Week from './Week';
+
+let currentMovement = 0;
 
 const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -23,13 +28,20 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   const [undone, setUndone] = useState([]);
   const [done, setDone] = useState([]);
   const [time, setTime] = useState(Date.parse(new Date()));
+  const [weeks, setWeeks] = useState([0]);
 
   const { isDarkTheme } = useContext(ThemeContext);
   const { user } = UserAuth();
+  const sliderRef = useRef();
+
+  let year = +date.toString().slice(6, 10);
+  let month = +date.toString().slice(3, 5) - 1;
+  let day = +date.toString().slice(0, 2);
+  let seconds = new Date(year, month, day).getTime();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      todosService.getUndoneTodos(user.uid, date, time),
+      todosService.getUndoneTodos(user.uid, seconds),
       (querySnapshot) => {
         let undoneArr = [];
         querySnapshot.forEach((doc) => {
@@ -43,7 +55,7 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      todosService.getDoneTodos(user.uid, date),
+      todosService.getDoneTodos(user.uid, seconds),
       (querySnapshot) => {
         let doneArr = [];
         querySnapshot.forEach((doc) => {
@@ -54,6 +66,15 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
     );
     return () => unsubscribe();
   }, [date]);
+
+  useEffect(() => {
+    const animate = () => {
+      requestAnimationFrame(animate);
+      sliderRef.current.style.left = currentMovement + 'px';
+      //sliderRef.current.style.left += currentMovement + 'px';
+    };
+    animate();
+  }, [weeks]);
 
   const changeWeekHandle = (btnType) => {
     if (btnType === 'prev') {
@@ -66,7 +87,34 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
 
   const onDateClickHandle = (day, dayStr) => {
     setSelectedDate(day);
+
     showDetailsHandle(dayStr);
+  };
+
+  const mountCallback = (id) => {
+    const element = document.getElementById(id);
+    const callback = (id) => {
+      setWeeks((prevState) => {
+        if (prevState.includes(id)) {
+          return id;
+        }
+        if (id < 0) {
+          currentMovement -= 250;
+          setCurrentMonth(subWeeks(currentMonth, 1));
+          return [id];
+        }
+        currentMovement += 260;
+        setCurrentMonth(addWeeks(currentMonth, 1));
+        return [id];
+      });
+    };
+    Observer.addEntry(element, callback);
+  };
+
+  const handleDrag = (event) => {
+    if (event.buttons === 1) {
+      currentMovement += event.movementX;
+    }
   };
 
   const renderHeader = () => {
@@ -83,27 +131,6 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
         <div className="col col-end"></div>
       </div>
     );
-  };
-
-  const renderDays = () => {
-    const dateFormat = 'EEE';
-    const days = [];
-    const startDate = startOfWeek(currentMonth, {
-      weekStartsOn: getISODay(new Date()),
-    });
-    for (let i = 0; i < 7; i++) {
-      days.push(
-        <div
-          className={
-            isDarkTheme === true ? 'col col-center' : 'col col-center dark'
-          }
-          key={i}
-        >
-          {format(addDays(startDate, i), dateFormat)}
-        </div>
-      );
-    }
-    return <div className="days cal-row">{days}</div>;
   };
 
   const chooseDay = (cloneDay) => {
@@ -141,6 +168,15 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
             key={day}
             onClick={() => chooseDay(cloneDay)}
           >
+            <span
+              className={
+                isDarkTheme === true ? 'col col-center' : 'col col-center dark'
+              }
+              key={i}
+            >
+              {format(addDays(startDate, i), 'EEE')}
+            </span>
+
             <span className={isDarkTheme === true ? 'number' : 'number dark'}>
               {formattedDate}
             </span>
@@ -161,15 +197,22 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
 
         day = addDays(day, 1);
       }
-
-      rows.push(
-        <div className="cal-row" key={day}>
-          {days}
-        </div>
-      );
-      days = [];
     }
-    return <div className="body">{rows}</div>;
+
+    return (
+      <div className="body" ref={sliderRef}>
+        {weeks.map((week) => (
+          <Week
+            key={week}
+            id={week}
+            handleDrag={handleDrag}
+            mountCallback={mountCallback}
+            days={days}
+          />
+        ))}
+        {/* {(days = [])} */}
+      </div>
+    );
   };
 
   const renderFooter = () => {
@@ -202,9 +245,12 @@ const Calendar = ({ showDetailsHandle, todos, date }) => {
   };
 
   return (
-    <div className={isDarkTheme === true ? 'calendar' : 'calendar dark'}>
+    <div
+      className={isDarkTheme === true ? 'calendar' : 'calendar dark'}
+      id="calendar"
+    >
       {renderHeader()}
-      {renderDays()}
+
       {renderCells()}
       {renderFooter()}
     </div>

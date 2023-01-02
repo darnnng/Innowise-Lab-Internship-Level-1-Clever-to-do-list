@@ -60,6 +60,16 @@ main {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+  position: relative;
+}
+
+.cal-row.active {
+  margin-right: 10px;
+}
+
+span.col.col-center {
+  font-size: 26px;
+  padding-left: 5px;
 }
 
 .row-middle {
@@ -103,6 +113,8 @@ main {
   margin-top: 80px;
   border-radius: 10px;
   background: #e2fae8;
+  overflow-x: hidden;
+  user-select: none;
 
   .days {
     text-transform: uppercase;
@@ -201,9 +213,20 @@ main {
     }
   }
 
+  .body {
+    position: relative;
+    height: 102px;
+    top: 0px;
+    box-sizing: 'border-box';
+    margin-top: 20px;
+    scroll-behavior: smooth;
+    user-select: none;
+  }
+
   .header {
     font-weight: 700;
     height: 40px;
+
     .icon {
       cursor: pointer;
       transition: 0.15s ease-out;

@@ -27,13 +27,8 @@ export class TodosService {
     return todosArr;
   }
 
-  getUndoneTodos(userId, date) {
+  getUndoneTodos(userId, seconds) {
     const todosCollection = collection(db, 'users', `${userId}`, 'todos');
-    // let year = +date.toString().slice(6, 10);
-    // let month = +date.toString().slice(3, 5) - 1;
-    // let day = +date.toString().slice(0, 2);
-    // let seconds = new Date(year, month, day).getTime();
-    let seconds = new Date().getTime() - 86400000;
 
     const todosUndoneQuery = query(
       todosCollection,
@@ -43,9 +38,9 @@ export class TodosService {
     return todosUndoneQuery;
   }
 
-  getDoneTodos(userId, date) {
+  getDoneTodos(userId, seconds) {
     const todosCollection = collection(db, 'users', `${userId}`, 'todos');
-    let seconds = new Date().getTime() - 86400000;
+
     const todosDoneQuery = query(
       todosCollection,
       where('isDone', '==', true),
