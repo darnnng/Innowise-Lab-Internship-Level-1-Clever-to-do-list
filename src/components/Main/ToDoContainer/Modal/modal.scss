@@ -1,0 +1,49 @@
+$dark-green: #27ae60;
+$light-green: #9fdeaf;
+
+.modal {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: 0.3s;
+  pointer-events: none;
+}
+
+.modaltitle {
+  color: $dark-green;
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modaltitlespan {
+  font-weight: bold;
+  color: $light-green;
+  padding-right: 5px;
+}
+
+.modaldiv {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal__content {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: white;
+  width: 450px;
+  height: 300px;
+}
